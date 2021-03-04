@@ -4,16 +4,17 @@ Version: 0.0.0.9000
 Authors@R: 
     c(person(given = "Javairia",
            family = "Raza",
-           role = c("aut", "cre")),
+           role = c("aut", "cre"),
+           email = "jr.jem19@gmail.com"),
       person(given = "Yanhua",
            family = "Chen",
-           role = c("aut", "cre")),
+           role = c("aut")),
       person(given = "Jianru",
            family = "Deng",
-           role = c("aut", "cre")),
+           role = c("aut")),
       person(given = "Doan Khanh Vu",
            family = "Tran",
-           role = c("aut", "cre")),
+           role = c("aut"))
            )
 Description: This package provide UBC MDS lecturers to record, analyze and adjust grades for students in the MDS program.
 License: MIT + file LICENSE
