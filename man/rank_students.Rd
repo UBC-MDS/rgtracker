@@ -7,10 +7,11 @@
 rank_students(course_id = "all", n = 3, ascending = FALSE)
 }
 \arguments{
-\item{ascending}{}
-}
-\value{
+\item{course_id}{string}
 
+\item{n}{integer}
+
+\item{ascending}{boolean}
 }
 \description{
 Calculate the average grade for all students and ranks them.

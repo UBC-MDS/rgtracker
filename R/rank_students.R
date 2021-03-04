@@ -1,10 +1,10 @@
 #' Calculate the average grade for all students and ranks them.
 #'
-#' @param course_id
-#' @param n
-#' @param ascending
+#' @param course_id string
+#' @param n integer
+#' @param ascending boolean
 #'
-#' @return
+#' @return NULL
 #' @export
 #'
 #' @examples
