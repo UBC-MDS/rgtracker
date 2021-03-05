@@ -33,7 +33,7 @@ generate_course_statistics <- function(course_ids) {
 #' @param method The method applied to rank the courses, should be "mean", "1st-quantile",
 #' "median", or "3rd-quantile". Defaults to "mean"
 #' @param descending A logical value to decide if the rank should be in descending or
-#' ascending order.
+#' ascending order. Default to True
 #'
 #' @return A dataframe containing the rank for specified courses
 #' @export
