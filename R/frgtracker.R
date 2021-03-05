@@ -39,3 +39,7 @@ rank_students <- function(course_id = "all", n = 3, ascending = FALSE) {
 }
 
 # function5 end
+
+# function6 start
+
+# function6 end
