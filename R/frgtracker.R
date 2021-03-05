@@ -17,7 +17,9 @@
 
 # function5 start
 
-#' Calculate the average grade for all students and ranks them for a specific
+#' Ranks students by their grade for a course or the program.
+#' 
+#' Calculate the average grade for a specified number of students and ranks them for a specific
 #' course or for the whole program completed thus far.
 #'
 #' @param course_id A string representing the course ID for which the ranking
