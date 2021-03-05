@@ -1,11 +1,38 @@
-# function1 start
 
 
-# function1 end
+# register_courses start
 
-# function2 start
+#' Read and store the input dataframe as a DataFrame.
+#'
+#' @param df dataframe: A tidy dataframe:
+#' course_id: str, assessment_id: str, ex: lab1, quiz1, weight: float, ex: 0.2,
+#' All assessment components for a course must sum up to 1.
+#'
+#' @return None
+#' @export
+#'
+register_courses <- function(df){
+  print('Placeholder')
+}
 
-# function2 end
+# register_courses end
+
+# record_grades start
+
+#'Record grades for students for a specified course and its assessments.
+#'
+#' @param df DataFrame: A tidy dataframe
+#'course_id: str,student_id: str, assessment_id: str, grade: float
+#'
+#'
+#' @return None
+#' @export
+#'
+record_grades <- function(df){
+  print('Placeholder')
+}
+
+# record_grades end
 
 # function3 start
 
