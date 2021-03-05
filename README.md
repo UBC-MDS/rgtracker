@@ -12,16 +12,16 @@ grades from each course, generate a summary report to determine which
 class is more challenging than the rest, or identify students who may
 need help. Finally, the package can suggest ways to adjust the grades
 for students to ensure the average grades match predefined benchmarks.
-It contains six functions: register\_courses, record\_grades,
-generate\_course\_statistics, rank\_courses, rank\_students and
-suggest\_grade\_adjustment.
+It contains six functions: `register_courses`, `record_grades`,
+`generate_course_statistics`, `rank_courses`,`rank_students` and
+`suggest_grade_adjustment`.
 
 The main components of this package are:
 
 -   Register courses
--   Read/store the courses information as a dataframe
+-   Read and store the courses information as a dataframe
 -   Record grades for students
-    -   Read/store the students’ grades for each assessment as a
+    -   Read and store the students’ grades for each assessment as a
         dataframe
 -   Generate course statistics
     -   Provide grade statistics on the courses, including mean, 1st
@@ -35,7 +35,19 @@ The main components of this package are:
     -   Suggest grade adjustments for any course based on predefined
         benchmarks
 
-# Relevance in R ecosystem
+## Relevance in R ecosystem
+
+Through a search of the [CRAN library of available R packages to
+date](https://cran.r-project.org/web/packages/available_packages_by_date.html),
+we have found that there is no exact package that performs the
+functionality of our functions as one package together. There are
+existing packages that grade students papers,
+[gradeR](https://cran.r-project.org/web/packages/gradeR/vignettes/gradeR.html)
+and returns the results of the grading for students. There is also
+another package called
+[ProfessR](https://cran.r-project.org/web/packages/ProfessR/index.html)
+that scales grades, plots the grades and calculates summary statistics
+(maximum, mean and minimum).
 
 ## Installation
 
