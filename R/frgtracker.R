@@ -9,16 +9,47 @@
 
 # function3 start
 
+#' Calculate the summary statistics for specified courses including mean, median and quantiles.
+#'
+#' @param course_ids A list including all course IDs for which the summary statistics are
+#' calculated for.
+#'
+#' @return A dataframe containing the summary statistics for specified courses
+#' @export
+#'
+#' @examples
+
+generate_course_statistics <- function(course_ids) {
+  print("NULL")
+}
+
 # function3 end
 
 # function4 start
+
+#' Calculate students' course grades to rank courses in ascending/descending order by a
+#' specified method.
+#'
+#' @param method The method applied to rank the courses, should be "mean", "1st-quantile",
+#' "median", or "3rd-quantile". Defaults to "mean"
+#' @param descending A logical value to decide if the rank should be in descending or
+#' ascending order.
+#'
+#' @return A dataframe containing the rank for specified courses
+#' @export
+#'
+#' @examples
+
+rank_courses <- function(method="mean", descending=True) {
+  print("NULL")
+}
 
 # function4 end
 
 # function5 start
 
 #' Ranks students by their grade for a course or the program.
-#' 
+#'
 #' Calculate the average grade for a specified number of students and ranks them for a specific
 #' course or for the whole program completed thus far.
 #'
