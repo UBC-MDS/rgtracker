@@ -2,17 +2,29 @@
 % Please edit documentation in R/frgtracker.R
 \name{rank_students}
 \alias{rank_students}
-\title{Calculate the average grade for all students and ranks them.}
+\title{Calculate the average grade for all students and ranks them for a specific
+course or for the whole program completed thus far.}
 \usage{
 rank_students(course_id = "all", n = 3, ascending = FALSE)
 }
 \arguments{
-\item{course_id}{string}
+\item{course_id}{A string representing the course ID for which the ranking
+should be calculated for. Defaults to "all".}
 
-\item{n}{integer}
+\item{n}{An integer value that represents the number of students for which the
+ranking is required for. Defaults to 3.}
 
-\item{ascending}{boolean}
+\item{ascending}{A logical value indicating whether the top or bottom ranking
+of students is required. Defaults to FALSE.}
+}
+\value{
+A dataframe containing the rank of the students for the course or the program
 }
 \description{
-Calculate the average grade for all students and ranks them.
+Calculate the average grade for all students and ranks them for a specific
+course or for the whole program completed thus far.
+}
+\examples{
+rank_students()
+rank_students(course_id="511", n=3, ascending=TRUE)
 }
