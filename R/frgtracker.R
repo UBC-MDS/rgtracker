@@ -1,11 +1,47 @@
-# function1 start
 
 
-# function1 end
+# register_courses start
 
-# function2 start
+#'Read and store the input data frame into a data frame of courses to be registered.
+#'
+#'For each of the course, the weights of all assessments should sum up to 1.
+#'The weights of individual assessment should be between 0 and 1.
+#'
+#' @param df A tidy data frame containing course information,
+#' with course id, all of the available assessments and corresponding weights.
+#'
+#'
+#' @return None
+#' @export
+#'
+#' @example
+#'register_courses(course_df)
+register_courses <- function(df){
 
-# function2 end
+}
+
+# register_courses end
+
+# record_grades start
+
+#'Record grades for students of a specified course and its assessments.
+#'
+#'The grades are recorded to be out of 100.
+#'
+#' @param df A tidy data frame as a student gradebook,
+#' with course id, student id, corresponding assessment id and grades.
+#'
+#'
+#' @return None
+#' @export
+#'
+#' @example
+#'record_grades(grade_df)
+record_grades <- function(df){
+
+}
+
+# record_grades end
 
 # function3 start
 
