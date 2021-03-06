@@ -31,7 +31,7 @@ generate_course_statistics <- function(course_ids) {
 #' specified method.
 #'
 #' @param method one of "method", "median", "lst-quantile", "3rd-quantile", defining 
-#' the method for calculating the course rankings. Defaults to "mean"
+#' the method for calculating the course rankings.
 #' @param descending A logical value to decide if the rank should be in descending or
 #' ascending order. Default to True
 #'
@@ -40,7 +40,7 @@ generate_course_statistics <- function(course_ids) {
 #'
 #' @examples
 
-rank_courses <- function(method="mean", descending=True) {
+rank_courses <- function(method= c("method", "median", "lst-quantile", "3rd-quantile"), descending=True) {
   print("NULL")
 }
 
