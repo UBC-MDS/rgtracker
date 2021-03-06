@@ -30,8 +30,8 @@ generate_course_statistics <- function(course_ids) {
 #' Calculate students' course grades to rank courses in ascending/descending order by a
 #' specified method.
 #'
-#' @param method one of "method", "median", "lst-quantile", "3rd-quantile", "newmankeuls", 
-#' defining the method for calculating the course rankings. Defaults to "mean"
+#' @param method one of "method", "median", "lst-quantile", "3rd-quantile", defining 
+#' the method for calculating the course rankings. Defaults to "mean"
 #' @param descending A logical value to decide if the rank should be in descending or
 #' ascending order. Default to True
 #'
