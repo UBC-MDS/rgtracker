@@ -42,6 +42,36 @@ rank_students <- function(course_id = "all", n = 3, ascending = FALSE) {
 
 # function5 end
 
-# function6 start
+# start Suggest Grade Adjustment
 
-# function6 end
+#' Adjust students' grades upwards in a course based on predefined benchmarks so
+#' that average grades for those components meet or exceed these benchmarks.
+#'
+#' Students' grades in labs and quizzes will first be adjusted upwards to meet
+#' or exceed benchmarks for labs and quizzes. However, if the average grade for
+#' the course is still below the course benchmark, we will continue to adjust
+#' upwards each lab / quiz until this benchmark is reached.
+#'
+#'
+#' @param course_id A string representing the course ID for which grades should
+#' be adjusted.
+#' @param benchmark_course A double value representing the benchmark of which
+#' the average grade for the whole course must meet or exceed. Defaults to 90.
+#' @param benchmark_lab A double value representing the benchmark of which the
+#' average grade for each lab must meet or exceed. Defaults to 85.
+#' @param benchmark_quiz A double value representing the benchmark of which the
+#' average grade for each quiz must meet or exceed. Defaults to 85.
+#'
+#' @return A dataframe containing adjusted grades for all students in a course.
+#' @export
+#'
+#' @examples
+#' suggest_grade_adjustment(course_id = "511")
+#' suggest_grade_adjustment(course_id = "511", benchmark_course = 98)
+suggest_grade_adjustment <- function(course_id, benchmark_course = 90,
+                                     benchmark_lab = 85, benchmark_quiz = 85)
+  {
+
+}
+
+# end Suggest Grade Adjustment
