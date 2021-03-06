@@ -2,34 +2,43 @@
 
 # register_courses start
 
-#' Read and store the input dataframe as a DataFrame.
+#'Read and store the input data frame into a data frame of courses to be registered.
 #'
-#' @param df dataframe: A tidy dataframe:
-#' course_id: str, assessment_id: str, ex: lab1, quiz1, weight: float, ex: 0.2,
-#' All assessment components for a course must sum up to 1.
+#'For each of the course, the weights of all assessments should sum up to 1.
+#'The weights of individual assessment should be between 0 and 1.
+#'
+#' @param df A tidy data frame containing course information,
+#' with course id, all of the available assessments and corresponding weights.
+#'
 #'
 #' @return None
 #' @export
 #'
+#' @example
+#'register_courses(course_df)
 register_courses <- function(df){
-  print('Placeholder')
+
 }
 
 # register_courses end
 
 # record_grades start
 
-#'Record grades for students for a specified course and its assessments.
+#'Record grades for students of a specified course and its assessments.
 #'
-#' @param df DataFrame: A tidy dataframe
-#'course_id: str,student_id: str, assessment_id: str, grade: float
+#'The grades are recorded to be out of 100.
+#'
+#' @param df A tidy data frame as a student gradebook,
+#' with course id, student id, corresponding assessment id and grades.
 #'
 #'
 #' @return None
 #' @export
 #'
+#' @example
+#'record_grades(grade_df)
 record_grades <- function(df){
-  print('Placeholder')
+
 }
 
 # record_grades end
@@ -45,7 +54,7 @@ record_grades <- function(df){
 # function5 start
 
 #' Ranks students by their grade for a course or the program.
-#' 
+#'
 #' Calculate the average grade for a specified number of students and ranks them for a specific
 #' course or for the whole program completed thus far.
 #'
