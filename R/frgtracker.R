@@ -75,3 +75,26 @@ suggest_grade_adjustment <- function(course_id, benchmark_course = 90,
 }
 
 # end Suggest Grade Adjustment
+
+# start Calculate Final Grade
+
+#' Calculate final grades for all students in a course
+#'
+#' For each student, the mark for each component will be multiplied with its
+#' associated weight, and summed up altogether.
+#'
+#'
+#' @param course_id A string representing the course ID for which final grades
+#' should be calculated.
+#'
+#' @return A dataframe containing final grades for all students in a course.
+#' @export
+#'
+#' @examples
+#' calculate_final_grade(course_id = "511")
+calculate_final_grade <- function(course_id)
+{
+
+}
+
+# end Calculate Final Grade
