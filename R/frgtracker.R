@@ -108,8 +108,34 @@ rank_students <- function(course_id = "all", n = 4, ascending = FALSE) {
   if (!is.numeric(n) | !is.character(course_id) | !is.logical(ascending)) {
     stop("Input value is not the correct type. Check documentation")
   }
-  print("NULL")
+  slicer <- ifelse(ascending, slice_min, slice_max)
+
+  # get list of all courses
+  # call helper data called df
+
+
+  if (.courseid == "all"){
+
+    avg_df <- df %>%
+      dplyr::group_by(student_id) %>%
+      dplyr::summarise(grade = mean(grade)) %>%
+      dplyr::mutate(rank = rank(-grade)) %>%
+      dplyr::slicer(grade, n = n)
+
+    avg_df
+
+  } else {
+    avg_df <- df %>%
+      dplyr::filter(course_id == .courseid) %>%
+      dplyr::group_by(student_id) %>%
+      dplyr::summarise(grade = mean(grade)) %>%
+      dplyr::mutate(rank = rank(-grade)) %>%
+      dplyr::slicer(grade, n = n)
+
+    avg_df
+  }
 }
+
 
 # function5 end
 
