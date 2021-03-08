@@ -66,7 +66,7 @@ generate_course_statistics <- function(course_ids) {
 #' Calculate students' course grades to rank courses in ascending/descending order by a
 #' specified method.
 #'
-#' @param method one of "method", "median", "lst-quantile", "3rd-quantile", defining 
+#' @param method one of "method", "median", "lst-quantile", "3rd-quantile", defining
 #' the method for calculating the course rankings.
 #' @param descending A logical value to decide if the rank should be in descending or
 #' ascending order. Default to True
@@ -103,7 +103,11 @@ rank_courses <- function(method= c("method", "median", "lst-quantile", "3rd-quan
 #' @examples
 #' rank_students()
 #' rank_students(course_id = "511", n = 3, ascending = TRUE)
-rank_students <- function(course_id = "all", n = 3, ascending = FALSE) {
+rank_students <- function(course_id = "all", n = 4, ascending = FALSE) {
+
+  if (!is.numeric(n) | !is.character(course_id) | !is.logical(ascending)) {
+    stop("Input value is not the correct type. Check documentation")
+  }
   print("NULL")
 }
 

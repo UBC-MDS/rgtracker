@@ -1,8 +1,5 @@
 #function1 start
-#remove when actual tests are added
-test_that("multiplication works", {
-  expect_equal(2 * 2, 4)
-})
+
 #function1 end
 
 #function2 start
@@ -18,7 +15,23 @@ test_that("multiplication works", {
 #function4 end
 
 #function5 start
+generate_fake_dataframe <- function(){
+  df <- data.frame (.studentid = c("joel", "mike", "tiff", "tom"),
+                    grade = c(90.82, 87.66, 88.34, 84.66),
+                    rank = c(1, 2, 3, 4)
+  )
+  df
+}
 
+test_that("Incorrect input types should throw an error", {
+  expect_error(rank_students(.courseid = 512))
+  expect_error(rank_students(n = "3"))
+  expect_error(rank_students(ascending = "TRUE"))
+})
+
+test_that("Dataframe should be equal"){
+  dplyr::all_equal(rank_students(.courseid="511"), generate_fake_dataframe())
+}
 #function5 end
 
 #function6 start
