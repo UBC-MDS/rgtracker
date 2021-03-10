@@ -186,17 +186,93 @@ suggest_grade_adjustment <- function(course_id, benchmark_course = 90,
 #' associated weight, and summed up altogether.
 #'
 #'
+#' @param courses A dataframe containing component weights for each course
+#' @param grades A dataframe containing grades for students
 #' @param course_ids A vector of strings representing the course IDs for which
 #' final grades should be calculated.
 #'
 #' @return A dataframe containing final grades for all students in a course.
 #' @export
 #'
+#' @importFrom magrittr %>%
+#' @importFrom rlang .data
+#'
 #' @examples
-#' calculate_final_grade(course_id = c("511"))
-calculate_final_grade <- function(course_ids)
+#' grades <- data.frame(
+#' course_id = c("511"),
+#' student_id = c("tom"),
+#' lab1 = c(100),
+#' lab2 = c(80)
+#' )
+#' courses <- data.frame(
+#' course_id = c("511"),
+#' lab1 = c(0.45),
+#' lab2 = c(0.55)
+#' )
+#' calculate_final_grade(courses, grades, course_ids = c("511"))
+calculate_final_grade <- function(courses, grades, course_ids)
 {
+  if(!is.data.frame(courses)){
+    stop("courses must be a dataframe")
+  }
 
+  if(!is.data.frame(grades)){
+    stop("grades must be a dataframe")
+  }
+
+  if(!is.character(course_ids)){
+    stop("course_ids must be a vector")
+  }
+
+  # As R discourages adding element to vector / list, we initialize these vectors
+  # with large number of elements, and keep track how many elements added to
+  # these vectors
+  # 25 courses & 150 students
+  LARGE <- 25 * 150
+  courses_col <- character(LARGE)
+  students_col <- character(LARGE)
+  grades_col <- numeric(LARGE)
+  index <- 1
+
+  vector <- character()
+
+  for (i in 1:length(course_ids)) {
+    id <- course_ids[i]
+
+    weights <- courses %>%
+      dplyr::filter(.data$course_id == id) %>%
+      dplyr::select(-.data$course_id)
+
+    course_grades <- grades %>%
+      dplyr::filter(.data$course_id == id) %>%
+      dplyr::select(-.data$course_id)
+
+    student_ids <- course_grades %>%
+      dplyr::pull(.data$student_id)
+
+    course_grades <- course_grades %>%
+      dplyr::select(-.data$student_id)
+
+    temp <- data.frame(mapply(`*`,course_grades, weights[1,])) %>% rowSums()
+    num_elements <- course_grades %>%
+      nrow()
+
+    end_index <- index + num_elements - 1
+
+    courses_col[index:end_index] <- rep(id, n = num_elements)
+    students_col[index:end_index] <- student_ids
+    grades_col[index:end_index] <- temp
+
+    index <- end_index + 1
+  }
+
+  final_grades <- data.frame(
+    course_id = courses_col[1:index-1],
+    student_id = students_col[1:index-1],
+    grade = grades_col[1:index-1]
+    )
+
+  final_grades
 }
 
 # end Calculate Final Grade
