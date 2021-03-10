@@ -159,8 +159,21 @@ suggest_grade_adjustment <- function(course_id, benchmark_course = 90,
 #' @return A dataframe containing final grades for all students in a course.
 #' @export
 #'
+#' @importFrom magrittr %>%
+#'
 #' @examples
-#' calculate_final_grade(course_id = c("511"))
+#' grades <- data.frame(
+#' course_id = c("511"),
+#' student_id = c("tom"),
+#' lab1 = c(100),
+#' lab2 = c(80)
+#' )
+#' courses <- data.frame(
+#' course_id = c("511"),
+#' lab1 = c(0.45),
+#' lab2 = c(0.55)
+#' )
+#' calculate_final_grade(courses, grades, course_ids = c("511"))
 calculate_final_grade <- function(courses, grades, course_ids)
 {
   if(!is.data.frame(courses)){
