@@ -65,6 +65,16 @@ generate_grades_calculate_final_grade <- function() {
   grades
 }
 
+generate_final_grade_calculate_final_grade <- function(course_id, grades) {
+  final_grades <- data.frame(
+    course_id = rep(course_id, n=4),
+    student_id = c("tom", "tiff", "mike", "joel"),
+    grades = grades
+  )
+
+  final_grades
+}
+
 test_that("The parameters for calculate_final_grade are not valid", {
   courses <- generate_courses_calculate_final_grade()
   grades <- generate_grades_calculate_final_grade()
@@ -73,5 +83,27 @@ test_that("The parameters for calculate_final_grade are not valid", {
   expect_error(calculate_final_grade(5, grades, course_id))
   expect_error(calculate_final_grade(courses, c(1, 3), course_id))
   expect_error(calculate_final_grade(courses, grades, "a"))
+})
+
+test_that("The output of calculate_final_grade is not valid", {
+  courses <- generate_courses_calculate_final_grade()
+  grades <- generate_grades_calculate_final_grade()
+  course_id <- c("511")
+
+  output <- calculate_final_grade(5, grades, course_id)
+  expect_true(is.data.frame(output))
+})
+
+test_that("The output of calculate_final_grade is incorrect", {
+  courses <- generate_courses_calculate_final_grade()
+  grades <- generate_grades_calculate_final_grade()
+  course_id <- c("511")
+
+  output <- calculate_final_grade(5, grades, course_id)
+  expected_output <- generate_final_grade_calculate_final_grade(
+    "511",
+    c(84.66, 88.34, 87.66, 90.82)
+    )
+  expect_equal(output, expected_output)
 })
 #tests for calculate_final_grade end
