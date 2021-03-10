@@ -21,11 +21,60 @@ test_that("multiplication works", {
 
 #function5 end
 
-#function6 start
+# tests for suggest_grade_adjustment start
 
-#function6 end
+generate_courses_suggest_grade_adjustment <- function() {
+  courses <- data.frame(
+    course_id = c(511),
+    lab1 = c(0.15),
+    lab2 = c(0.15),
+    lab3 = c(0.15),
+    lab4 = c(0.15),
+    quiz1 = c(0.2),
+    quiz2 = c(0.2)
+  )
 
-#tests for calculate_final_grade start
+  courses
+}
+
+generate_grades_suggest_grade_adjustment <- function() {
+  grades <- data.frame(
+    course_id = c(511),
+    student_id = c("tom"),
+    lab1 = c(90),
+    lab2 = c(90),
+    lab3 = c(90),
+    lab4 = c(90),
+    quiz1 = c(85),
+    quiz2 = c(85)
+  )
+
+  grades
+}
+
+test_that("The parameters for suggest_grade_adjustment are not valid", {
+  courses <- generate_courses_suggest_grade_adjustment()
+  grades <- generate_grades_suggest_grade_adjustment()
+  course_id <- c("511")
+
+  expect_error(suggest_grade_adjustment(5, grades, course_id))
+  expect_error(suggest_grade_adjustment(courses, c(1, 3), course_id))
+  expect_error(suggest_grade_adjustment(courses, grades, 5))
+  expect_error(suggest_grade_adjustment(courses, grades, course_id, "a"))
+  expect_error(suggest_grade_adjustment(courses, grades, course_id, 90, "a"))
+  expect_error(suggest_grade_adjustment(courses, grades, course_id, 90, 85, "a"))
+  expect_error(suggest_grade_adjustment(courses, grades, course_id, 105, 85, 100))
+  expect_error(suggest_grade_adjustment(courses, grades, course_id, -5, 85, 100))
+  expect_error(suggest_grade_adjustment(courses, grades, course_id, 95, 185, 100))
+  expect_error(suggest_grade_adjustment(courses, grades, course_id, 95, -20, 100))
+  expect_error(suggest_grade_adjustment(courses, grades, course_id, 95, 90, 120))
+  expect_error(suggest_grade_adjustment(courses, grades, course_id, 95, 90, -20))
+})
+
+# tests for suggest_grade_adjustment end
+
+# tests for calculate_final_grade start
+
 generate_courses_calculate_final_grade <- function() {
   courses <- data.frame(
     course_id = c(511, 522),
@@ -115,4 +164,5 @@ test_that("The output of calculate_final_grade is incorrect", {
   )
   expect_equal(output, expected_output)
 })
-#tests for calculate_final_grade end
+
+# tests for calculate_final_grade end
