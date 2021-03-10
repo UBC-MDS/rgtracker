@@ -37,16 +37,18 @@ generate_courses_suggest_grade_adjustment <- function() {
   courses
 }
 
-generate_grades_suggest_grade_adjustment <- function() {
+generate_grades_suggest_grade_adjustment <- function(
+  course_id, student_id, lab1, lab2, lab3, lab4, quiz1, quiz2)
+  {
   grades <- data.frame(
-    course_id = c(511),
-    student_id = c("tom"),
-    lab1 = c(90),
-    lab2 = c(90),
-    lab3 = c(90),
-    lab4 = c(90),
-    quiz1 = c(85),
-    quiz2 = c(85)
+    course_id = c(course_id),
+    student_id = c(student_id),
+    lab1 = c(lab1),
+    lab2 = c(lab2),
+    lab3 = c(lab3),
+    lab4 = c(lab4),
+    quiz1 = c(quiz1),
+    quiz2 = c(quiz2)
   )
 
   grades
@@ -54,7 +56,9 @@ generate_grades_suggest_grade_adjustment <- function() {
 
 test_that("The parameters for suggest_grade_adjustment are not valid", {
   courses <- generate_courses_suggest_grade_adjustment()
-  grades <- generate_grades_suggest_grade_adjustment()
+  grades <- generate_grades_suggest_grade_adjustment(
+    511, "tom", 90, 90, 90, 90, 85, 85
+  )
   course_id <- c("511")
 
   expect_error(suggest_grade_adjustment(5, grades, course_id))
@@ -69,6 +73,17 @@ test_that("The parameters for suggest_grade_adjustment are not valid", {
   expect_error(suggest_grade_adjustment(courses, grades, course_id, 95, -20, 100))
   expect_error(suggest_grade_adjustment(courses, grades, course_id, 95, 90, 120))
   expect_error(suggest_grade_adjustment(courses, grades, course_id, 95, 90, -20))
+})
+
+test_that("The outputs for suggest_grade_adjustment are incorrect", {
+  courses <- generate_courses_suggest_grade_adjustment()
+  grades <- generate_grades_suggest_grade_adjustment(
+    511, "tom", 90, 90, 90, 90, 85, 85
+  )
+  course_id <- c("511")
+
+  no_adjust <- suggest_grade_adjustment(courses, grades, course_id, 85, 85, 85)
+  expect_equal(no_adjust, grades)
 })
 
 # tests for suggest_grade_adjustment end
