@@ -23,15 +23,30 @@ generate_fake_dataframe <- function(){
   df
 }
 
+generate_fake_matrix <- function(){
+  matrix_ex <- matrix(data = c(c(rep("511",4), rep("522", 4)),
+                               c("tom", "tiff","mike","joel","tom","tiff","mike","joel"),
+                               c(84.66, 88.34, 87.66, 90.82, 95.52, 87.92, 88.92, 92.80)),
+                      nrow = 8,
+                      ncol = 3)
+}
+
 test_that("Incorrect input types should throw an error", {
+  expect_error(rank_students(df = generate_fake_matrix()))
   expect_error(rank_students(.courseid = 512))
   expect_error(rank_students(n = "3"))
+  expect_error(rank_students(n = -3))
+  expect_error(rank_students(n = 3.5))
+  expect_error(nrow(rank_students(df,.courseid="511", n = 5)))
   expect_error(rank_students(ascending = "TRUE"))
 })
 
 test_that("Dataframe should be equal"){
-  dplyr::all_equal(rank_students(.courseid="511"), generate_fake_dataframe())
+  dplyr::all_equal(rank_students(df,.courseid="511"), generate_fake_dataframe())
 }
+
+
+
 #function5 end
 
 #function6 start

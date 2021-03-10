@@ -86,8 +86,8 @@ rank_courses <- function(method= c("method", "median", "lst-quantile", "3rd-quan
 
 #' Ranks students by their grade for a course or the program.
 #'
-#' Calculate the average grade for a specified number of students and ranks them for a specific
-#' course or for the whole program completed thus far.
+#' Calculate the average grade for a specified number of students and ranks
+#' them for a specific course or for the whole program completed thus far.
 #'
 #' @param course_id A string representing the course ID for which the ranking
 #' should be calculated for. Defaults to "all" for all courses completed thus far.
@@ -95,45 +95,50 @@ rank_courses <- function(method= c("method", "median", "lst-quantile", "3rd-quan
 #' ranking is required for. Defaults to 3.
 #' @param ascending A logical value indicating whether the top or bottom ranking
 #' of students is required. Defaults to FALSE.
+#' @param df A dataframe containing the final grades for each student per course
 #'
 #' @return A dataframe containing the rank of the students for the course or
 #' the program
 #' @export
 #'
 #' @examples
-#' rank_students()
-#' rank_students(course_id = "511", n = 3, ascending = TRUE)
-rank_students <- function(course_id = "all", n = 4, ascending = FALSE) {
+#' rank_students(df)
+#' rank_students(df, course_id = "511", n = 3, ascending = TRUE)
+rank_students <- function(df,course_id = "all", n = 4, ascending = FALSE) {
 
-  if (!is.numeric(n) | !is.character(course_id) | !is.logical(ascending)) {
+  if (!is.numeric(n) | !is.character(course_id) | !is.logical(ascending) |
+      !is.data.frame(df)) {
     stop("Input value is not the correct type. Check documentation")
   }
+
+  if (n >= 0 | n%%1!=0 | n <= length(unique(df$student_id))){
+    stop("The input for n is wrong. Check documentation")
+  }
+
+  if (.courseid %in% list(unique(df$course_id))){
+    stop("The input for n is wrong. Check documentation")
+  }
+
+
   slicer <- ifelse(ascending, slice_min, slice_max)
 
-  # get list of all courses
-  # call helper data called df
+  courses_list <- list(unique(df$course_id))
 
+  df <- calculate_final_grade(courses, grades, course_ids = courses_list)
 
-  if (.courseid == "all"){
+  temp_df <- df
 
-    avg_df <- df %>%
-      dplyr::group_by(student_id) %>%
-      dplyr::summarise(grade = mean(grade)) %>%
-      dplyr::mutate(rank = rank(-grade)) %>%
-      dplyr::slicer(grade, n = n)
-
-    avg_df
-
-  } else {
-    avg_df <- df %>%
-      dplyr::filter(course_id == .courseid) %>%
-      dplyr::group_by(student_id) %>%
-      dplyr::summarise(grade = mean(grade)) %>%
-      dplyr::mutate(rank = rank(-grade)) %>%
-      dplyr::slicer(grade, n = n)
-
-    avg_df
+  if (.courseid != "all"){
+    temp_df <-	df %>%
+      dplyr::filter(course_id == .courseid)
   }
+
+  avg_df <- temp_df %>%
+    dplyr::group_by(student_id) %>%
+    dplyr::summarise(grade = mean(grade)) %>%
+    dplyr::mutate(rank = rank(-grade)) %>%
+    dplyr::slicer(grade, n = n)
+  avg_df
 }
 
 
