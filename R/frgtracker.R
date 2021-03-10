@@ -160,6 +160,7 @@ suggest_grade_adjustment <- function(course_id, benchmark_course = 90,
 #' @export
 #'
 #' @importFrom magrittr %>%
+#' @importFrom rlang .data
 #'
 #' @examples
 #' grades <- data.frame(
@@ -204,17 +205,18 @@ calculate_final_grade <- function(courses, grades, course_ids)
     id <- course_ids[i]
 
     weights <- courses %>%
-      dplyr::filter(course_id == id) %>%
-      dplyr::select(-course_id)
+      dplyr::filter(.data$course_id == id) %>%
+      dplyr::select(-.data$course_id)
 
     course_grades <- grades %>%
-      dplyr::filter(course_id == id) %>%
-      dplyr::select(-course_id)
+      dplyr::filter(.data$course_id == id) %>%
+      dplyr::select(-.data$course_id)
 
-    student_ids <- course_grades$student_id
+    student_ids <- course_grades %>%
+      dplyr::pull(.data$student_id)
 
     course_grades <- course_grades %>%
-      dplyr::select(-student_id)
+      dplyr::select(-.data$student_id)
 
     temp <- data.frame(mapply(`*`,course_grades, weights[1,])) %>% rowSums()
     num_elements <- course_grades %>%
