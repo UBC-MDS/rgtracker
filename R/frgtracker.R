@@ -119,7 +119,8 @@ rank_students <- function(course_id = "all", n = 3, ascending = FALSE) {
 #' the course is still below the course benchmark, we will continue to adjust
 #' upwards each lab / quiz until this benchmark is reached.
 #'
-#'
+#' @param courses A dataframe containing component weights for each course
+#' @param grades A dataframe containing grades for students
 #' @param course_id A string representing the course ID for which grades should
 #' be adjusted.
 #' @param benchmark_course A double value representing the benchmark of which
@@ -132,11 +133,27 @@ rank_students <- function(course_id = "all", n = 3, ascending = FALSE) {
 #' @return A dataframe containing adjusted grades for all students in a course.
 #' @export
 #'
+#' @importFrom magrittr %>%
+#' @importFrom rlang .data
+#'
 #' @examples
-#' suggest_grade_adjustment(course_id = "511")
-#' suggest_grade_adjustment(course_id = "511", benchmark_course = 98)
-suggest_grade_adjustment <- function(course_id, benchmark_course = 90,
-                                     benchmark_lab = 85, benchmark_quiz = 85)
+#' grades <- data.frame(
+#' course_id = c("511"),
+#' student_id = c("tom"),
+#' lab1 = c(100),
+#' lab2 = c(80)
+#' )
+#' courses <- data.frame(
+#' course_id = c("511"),
+#' lab1 = c(0.45),
+#' lab2 = c(0.55)
+#' )
+#' suggest_grade_adjustment(grades, courses, course_id = "511")
+#' suggest_grade_adjustment(grades, courses, course_id = "511",
+#' benchmark_course = 98)
+suggest_grade_adjustment <- function(courses, grades, course_id,
+                                     benchmark_course = 90, benchmark_lab = 85,
+                                     benchmark_quiz = 85)
   {
 
 }
