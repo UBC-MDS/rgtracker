@@ -203,15 +203,11 @@ calculate_final_grade <- function(courses, grades, course_ids)
     course_grades <- course_grades %>%
       dplyr::select(-student_id)
 
-    # print(course_grades)
-
     temp <- data.frame(mapply(`*`,course_grades, weights[1,])) %>% rowSums()
-    print(temp)
     num_elements <- course_grades %>%
       nrow()
 
     end_index <- index + num_elements - 1
-    print(num_elements)
 
     courses_col[index:end_index] <- rep(id, n = num_elements)
     students_col[index:end_index] <- student_ids
