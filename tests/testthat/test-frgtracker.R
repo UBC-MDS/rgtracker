@@ -84,6 +84,16 @@ test_that("The outputs for suggest_grade_adjustment are incorrect", {
 
   no_adjust <- suggest_grade_adjustment(courses, grades, course_id, 85, 85, 85)
   expect_equal(no_adjust, grades)
+
+  labs_adjust <- suggest_grade_adjustment(courses, grades, course_id, 85, 95, 85)
+  expect_equal(labs_adjust, generate_grades_suggest_grade_adjustment(
+    511, "tom", 95, 95, 95, 95, 85, 85
+  ))
+
+  quiz_adjust <- suggest_grade_adjustment(courses, grades, course_id, 85, 85, 90)
+  expect_equal(quiz_adjust, generate_grades_suggest_grade_adjustment(
+    511, "tom", 90, 90, 90, 90, 90, 90
+  ))
 })
 
 # tests for suggest_grade_adjustment end

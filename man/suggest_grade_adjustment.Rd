@@ -8,7 +8,7 @@ that average grades for those components meet or exceed these benchmarks.}
 suggest_grade_adjustment(
   courses,
   grades,
-  course_id,
+  id,
   benchmark_course = 90,
   benchmark_lab = 85,
   benchmark_quiz = 85
@@ -19,7 +19,7 @@ suggest_grade_adjustment(
 
 \item{grades}{A dataframe containing grades for students}
 
-\item{course_id}{A string representing the course ID for which grades should
+\item{id}{A string representing the course ID for which grades should
 be adjusted.}
 
 \item{benchmark_course}{A double value representing the benchmark of which
@@ -52,7 +52,5 @@ course_id = c("511"),
 lab1 = c(0.45),
 lab2 = c(0.55)
 )
-suggest_grade_adjustment(grades, courses, course_id = "511")
-suggest_grade_adjustment(grades, courses, course_id = "511",
-benchmark_course = 98)
+suggest_grade_adjustment(courses, grades, id = "511")
 }

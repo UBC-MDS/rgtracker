@@ -121,7 +121,7 @@ rank_students <- function(course_id = "all", n = 3, ascending = FALSE) {
 #'
 #' @param courses A dataframe containing component weights for each course
 #' @param grades A dataframe containing grades for students
-#' @param course_id A string representing the course ID for which grades should
+#' @param id A string representing the course ID for which grades should
 #' be adjusted.
 #' @param benchmark_course A double value representing the benchmark of which
 #' the average grade for the whole course must meet or exceed. Defaults to 90.
@@ -148,10 +148,8 @@ rank_students <- function(course_id = "all", n = 3, ascending = FALSE) {
 #' lab1 = c(0.45),
 #' lab2 = c(0.55)
 #' )
-#' suggest_grade_adjustment(grades, courses, course_id = "511")
-#' suggest_grade_adjustment(grades, courses, course_id = "511",
-#' benchmark_course = 98)
-suggest_grade_adjustment <- function(courses, grades, course_id,
+#' suggest_grade_adjustment(courses, grades, id = "511")
+suggest_grade_adjustment <- function(courses, grades, id,
                                      benchmark_course = 90, benchmark_lab = 85,
                                      benchmark_quiz = 85)
   {
@@ -163,7 +161,7 @@ suggest_grade_adjustment <- function(courses, grades, course_id,
     stop("grades must be a dataframe")
   }
 
-  if(!is.character(course_id)){
+  if(!is.character(id)){
     stop("course_id must be a vector")
   }
 
@@ -180,6 +178,48 @@ suggest_grade_adjustment <- function(courses, grades, course_id,
       benchmark_quiz > 100) {
     stop("benchmark_quiz must be a number between 0 and 100 (inclusive")
   }
+
+  # filter course component and grades for this course only
+  courses <- courses %>%
+    dplyr::filter(.data$course_id == id)
+
+  grades <- grades %>%
+    dplyr::filter(.data$course_id == id)
+
+  components <- courses %>%
+    tidyr::pivot_longer(
+      !.data$course_id,
+      names_to = "component",
+      "values_to" = "weight") %>%
+    dplyr::filter(.data$weight > 0) %>%
+    dplyr::pull(.data$component)
+
+  for (i in 1:length(components)) {
+    component <- components[i]
+    print(component)
+
+    benchmark <- benchmark_lab
+    if (startsWith(component, "quiz")) {
+      benchmark <- benchmark_quiz
+    }
+
+    component_grades <- grades %>%
+      dplyr::pull(get(component))
+
+    avg <- component_grades %>%
+      mean()
+
+    while (avg < benchmark) {
+      component_grades <- component_grades %>%
+        sapply(function(x) min(x + 1L, 100L))
+
+      avg <- component_grades %>%
+        mean()
+    }
+    grades[component] <- component_grades
+
+  }
+  grades
 }
 
 # end Suggest Grade Adjustment
