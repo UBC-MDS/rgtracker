@@ -171,9 +171,62 @@ calculate_final_grade <- function(courses, grades, course_ids)
     stop("grades must be a dataframe")
   }
 
-  if(is.atomic(course_ids) || is.list(course_ids)){
+  if(!is.character(course_ids)){
     stop("course_ids must be a vector")
   }
+
+  # As R discourages adding element to vector / list, we initialize these vectors
+  # with large number of elements, and keep track how many elements added to
+  # these vectors
+  # 25 courses & 150 students
+  LARGE <- 25 * 150
+  courses_col <- character(LARGE)
+  students_col <- character(LARGE)
+  grades_col <- numeric(LARGE)
+  index <- 1
+
+  vector <- character()
+
+  for (i in 1:length(course_ids)) {
+    id <- course_ids[i]
+
+    weights <- courses %>%
+      dplyr::filter(course_id == id) %>%
+      dplyr::select(-course_id)
+
+    course_grades <- grades %>%
+      dplyr::filter(course_id == id) %>%
+      dplyr::select(-course_id)
+
+    student_ids <- course_grades$student_id
+
+    course_grades <- course_grades %>%
+      dplyr::select(-student_id)
+
+    # print(course_grades)
+
+    temp <- data.frame(mapply(`*`,course_grades, weights[1,])) %>% rowSums()
+    print(temp)
+    num_elements <- course_grades %>%
+      nrow()
+
+    end_index <- index + num_elements - 1
+    print(num_elements)
+
+    courses_col[index:end_index] <- rep(id, n = num_elements)
+    students_col[index:end_index] <- student_ids
+    grades_col[index:end_index] <- temp
+
+    index <- end_index + 1
+  }
+
+  final_grades <- data.frame(
+    course_id = courses_col[1:index-1],
+    student_id = students_col[1:index-1],
+    grade = grades_col[1:index-1]
+    )
+
+  final_grades
 }
 
 # end Calculate Final Grade

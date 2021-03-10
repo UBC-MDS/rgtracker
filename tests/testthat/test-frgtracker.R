@@ -28,7 +28,7 @@ test_that("multiplication works", {
 #tests for calculate_final_grade start
 generate_courses_calculate_final_grade <- function() {
   courses <- data.frame(
-    courses = c(511, 522),
+    course_id = c(511, 522),
     lab1 = c(0.15, 0),
     lab2 = c(0.15, 0),
     lab3 = c(0.15, 0),
@@ -65,11 +65,11 @@ generate_grades_calculate_final_grade <- function() {
   grades
 }
 
-generate_final_grade_calculate_final_grade <- function(course_id, grades) {
+generate_final_grade_calculate_final_grade <- function(course_id, grade) {
   final_grades <- data.frame(
     course_id = rep(course_id, n=4),
     student_id = c("tom", "tiff", "mike", "joel"),
-    grades = grades
+    grade = grade
   )
 
   final_grades
@@ -82,28 +82,37 @@ test_that("The parameters for calculate_final_grade are not valid", {
 
   expect_error(calculate_final_grade(5, grades, course_id))
   expect_error(calculate_final_grade(courses, c(1, 3), course_id))
-  expect_error(calculate_final_grade(courses, grades, "a"))
+  expect_error(calculate_final_grade(courses, grades, 5))
 })
 
 test_that("The output of calculate_final_grade is not valid", {
   courses <- generate_courses_calculate_final_grade()
   grades <- generate_grades_calculate_final_grade()
-  course_id <- c("511")
+  course_ids <- c("511")
 
-  output <- calculate_final_grade(5, grades, course_id)
+  output <- calculate_final_grade(courses, grades, course_ids)
   expect_true(is.data.frame(output))
 })
 
 test_that("The output of calculate_final_grade is incorrect", {
   courses <- generate_courses_calculate_final_grade()
   grades <- generate_grades_calculate_final_grade()
-  course_id <- c("511")
+  course_ids <- c("511")
 
-  output <- calculate_final_grade(5, grades, course_id)
+  output <- calculate_final_grade(courses, grades, course_ids)
   expected_output <- generate_final_grade_calculate_final_grade(
     "511",
     c(84.66, 88.34, 87.66, 90.82)
     )
+  expect_equal(output, expected_output)
+
+  course_ids <- c("522")
+
+  output <- calculate_final_grade(courses, grades, course_ids)
+  expected_output <- generate_final_grade_calculate_final_grade(
+    "522",
+    c(95.52, 87.92, 88.92, 92.80)
+  )
   expect_equal(output, expected_output)
 })
 #tests for calculate_final_grade end
