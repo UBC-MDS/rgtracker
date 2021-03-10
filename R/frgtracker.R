@@ -151,6 +151,8 @@ suggest_grade_adjustment <- function(course_id, benchmark_course = 90,
 #' associated weight, and summed up altogether.
 #'
 #'
+#' @param courses A dataframe containing component weights for each course
+#' @param grades A dataframe containing grades for students
 #' @param course_ids A vector of strings representing the course IDs for which
 #' final grades should be calculated.
 #'
@@ -159,7 +161,7 @@ suggest_grade_adjustment <- function(course_id, benchmark_course = 90,
 #'
 #' @examples
 #' calculate_final_grade(course_id = c("511"))
-calculate_final_grade <- function(course_ids)
+calculate_final_grade <- function(courses, grades, course_ids)
 {
 
 }
