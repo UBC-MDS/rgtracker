@@ -163,7 +163,17 @@ suggest_grade_adjustment <- function(course_id, benchmark_course = 90,
 #' calculate_final_grade(course_id = c("511"))
 calculate_final_grade <- function(courses, grades, course_ids)
 {
+  if(!is.data.frame(courses)){
+    stop("courses must be a dataframe")
+  }
 
+  if(!is.data.frame(grades)){
+    stop("grades must be a dataframe")
+  }
+
+  if(is.atomic(course_ids) || is.list(course_ids)){
+    stop("course_ids must be a vector")
+  }
 }
 
 # end Calculate Final Grade
