@@ -155,7 +155,31 @@ suggest_grade_adjustment <- function(courses, grades, course_id,
                                      benchmark_course = 90, benchmark_lab = 85,
                                      benchmark_quiz = 85)
   {
+  if(!is.data.frame(courses)){
+    stop("courses must be a dataframe")
+  }
 
+  if(!is.data.frame(grades)){
+    stop("grades must be a dataframe")
+  }
+
+  if(!is.character(course_id)){
+    stop("course_id must be a vector")
+  }
+
+  if (!is.numeric(benchmark_course) || benchmark_course < 0 ||
+      benchmark_course > 100) {
+    stop("benchmark_course must be a number between 0 and 100 (inclusive")
+  }
+
+  if (!is.numeric(benchmark_lab) || benchmark_lab < 0 || benchmark_lab > 100) {
+    stop("benchmark_lab must be a number between 0 and 100 (inclusive")
+  }
+
+  if (!is.numeric(benchmark_quiz) || benchmark_quiz < 0 ||
+      benchmark_quiz > 100) {
+    stop("benchmark_quiz must be a number between 0 and 100 (inclusive")
+  }
 }
 
 # end Suggest Grade Adjustment
