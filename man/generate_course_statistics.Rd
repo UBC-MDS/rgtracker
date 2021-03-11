@@ -16,3 +16,6 @@ A dataframe containing the summary statistics for specified courses
 \description{
 Calculate the summary statistics for specified courses including mean, median and quantiles.
 }
+\examples{
+
+}

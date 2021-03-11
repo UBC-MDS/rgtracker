@@ -1,10 +1,10 @@
 
 # register_courses start
 
-#'Read and store the input data frame into a data frame of courses to be registered.
+#' Read and store the input data frame into a data frame of courses to be registered.
 #'
-#'For each of the course, the weights of all assessments should sum up to 1.
-#'The weights of individual assessment should be between 0 and 1.
+#' For each of the course, the weights of all assessments should sum up to 1.
+#' The weights of individual assessment should be between 0 and 1.
 #'
 #' @param df A tidy data frame containing course information,
 #' with course id, all of the available assessments and corresponding weights.
@@ -14,8 +14,8 @@
 #' @export
 #'
 #' @example
-#'register_courses(course_df)
-register_courses <- function(df){
+#' register_courses(course_df)
+register_courses <- function(df) {
 
 }
 
@@ -23,9 +23,9 @@ register_courses <- function(df){
 
 # record_grades start
 
-#'Record grades for students of a specified course and its assessments.
+#' Record grades for students of a specified course and its assessments.
 #'
-#'The grades are recorded to be out of 100.
+#' The grades are recorded to be out of 100.
 #'
 #' @param df A tidy data frame as a student gradebook,
 #' with course id, student id, corresponding assessment id and grades.
@@ -35,8 +35,8 @@ register_courses <- function(df){
 #' @export
 #'
 #' @example
-#'record_grades(grade_df)
-record_grades <- function(df){
+#' record_grades(grade_df)
+record_grades <- function(df) {
 
 }
 
@@ -53,7 +53,7 @@ record_grades <- function(df){
 #' @export
 #'
 #' @examples
-
+#'
 generate_course_statistics <- function(course_ids) {
   print("NULL")
 }
@@ -74,8 +74,8 @@ generate_course_statistics <- function(course_ids) {
 #' @export
 #'
 #' @examples
-
-rank_courses <- function(method= c("method", "median", "lst-quantile", "3rd-quantile"), descending=True) {
+#'
+rank_courses <- function(method = c("method", "median", "lst-quantile", "3rd-quantile"), descending = True) {
   print("NULL")
 }
 
@@ -101,16 +101,15 @@ rank_courses <- function(method= c("method", "median", "lst-quantile", "3rd-quan
 #' @export
 #'
 #' @examples
-#' df <- data.frame(course_id  = c(rep("511", 4)),
-#' student_id =  c("tom", "tiff", "mike", "joel"),
-#' grade = c(90, 80, 70, 67)
-#'
+#' df <- data.frame(
+#'   course_id = c(rep("511", 4)),
+#'   student_id = c("tom", "tiff", "mike", "joel"),
+#'   grade = c(90, 80, 70, 67)
 #' )
 #'
 #' rank_students(df = df)
-#' rank_students(df= df, courseid = "511", n = 3, ascending = TRUE)
+#' rank_students(df = df, courseid = "511", n = 3, ascending = TRUE)
 rank_students <- function(df, courseid = "all", n = 4, ascending = FALSE) {
-
   if (!is.numeric(n)) {
     stop("Input value n argument can only by a numeric value")
   }
@@ -127,19 +126,19 @@ rank_students <- function(df, courseid = "all", n = 4, ascending = FALSE) {
     stop("Input for df argument can only be a dataframe")
   }
 
-  if (n <= 0){
+  if (n <= 0) {
     stop("The input for n can only be a positive integer.")
   }
 
-  if (n%%1 != 0){
+  if (n %% 1 != 0) {
     stop("The input for n can only be a integer.")
   }
 
-  if (n > length(unique(df$student_id))){
+  if (n > length(unique(df$student_id))) {
     stop("The input for n can not greater than the total number of students")
   }
 
-  if (!(courseid %in% c(unique(df$course_id), "all"))){
+  if (!(courseid %in% c(unique(df$course_id), "all"))) {
     stop("This course is currently not a part of the courses list")
   }
 
@@ -147,8 +146,8 @@ rank_students <- function(df, courseid = "all", n = 4, ascending = FALSE) {
 
   temp_df <- df
 
-  if (courseid != "all"){
-    temp_df <-	df %>%
+  if (courseid != "all") {
+    temp_df <- df %>%
       dplyr::filter(.data$course_id == courseid)
   }
 
@@ -156,7 +155,8 @@ rank_students <- function(df, courseid = "all", n = 4, ascending = FALSE) {
     dplyr::group_by(.data$student_id) %>%
     dplyr::summarise(grade = mean(.data$grade)) %>%
     dplyr::mutate(rank = rank(-.data$grade,
-                              ties.method= "random", na.last = NA)) %>%
+      ties.method = "random", na.last = NA
+    )) %>%
     slicer(.data$grade, n = n)
 
   as.data.frame(avg_df)
@@ -191,8 +191,7 @@ rank_students <- function(df, courseid = "all", n = 4, ascending = FALSE) {
 #' suggest_grade_adjustment(course_id = "511")
 #' suggest_grade_adjustment(course_id = "511", benchmark_course = 98)
 suggest_grade_adjustment <- function(course_id, benchmark_course = 90,
-                                     benchmark_lab = 85, benchmark_quiz = 85)
-  {
+                                     benchmark_lab = 85, benchmark_quiz = 85) {
 
 }
 
@@ -219,28 +218,27 @@ suggest_grade_adjustment <- function(course_id, benchmark_course = 90,
 #'
 #' @examples
 #' grades <- data.frame(
-#' course_id = c("511"),
-#' student_id = c("tom"),
-#' lab1 = c(100),
-#' lab2 = c(80)
+#'   course_id = c("511"),
+#'   student_id = c("tom"),
+#'   lab1 = c(100),
+#'   lab2 = c(80)
 #' )
 #' courses <- data.frame(
-#' course_id = c("511"),
-#' lab1 = c(0.45),
-#' lab2 = c(0.55)
+#'   course_id = c("511"),
+#'   lab1 = c(0.45),
+#'   lab2 = c(0.55)
 #' )
 #' calculate_final_grade(courses, grades, course_ids = c("511"))
-calculate_final_grade <- function(courses, grades, course_ids)
-{
-  if(!is.data.frame(courses)){
+calculate_final_grade <- function(courses, grades, course_ids) {
+  if (!is.data.frame(courses)) {
     stop("courses must be a dataframe")
   }
 
-  if(!is.data.frame(grades)){
+  if (!is.data.frame(grades)) {
     stop("grades must be a dataframe")
   }
 
-  if(!is.character(course_ids)){
+  if (!is.character(course_ids)) {
     stop("course_ids must be a vector")
   }
 
@@ -273,7 +271,7 @@ calculate_final_grade <- function(courses, grades, course_ids)
     course_grades <- course_grades %>%
       dplyr::select(-.data$student_id)
 
-    temp <- data.frame(mapply(`*`,course_grades, weights[1,])) %>% rowSums()
+    temp <- data.frame(mapply(`*`, course_grades, weights[1, ])) %>% rowSums()
     num_elements <- course_grades %>%
       nrow()
 
@@ -287,10 +285,10 @@ calculate_final_grade <- function(courses, grades, course_ids)
   }
 
   final_grades <- data.frame(
-    course_id = courses_col[1:index-1],
-    student_id = students_col[1:index-1],
-    grade = grades_col[1:index-1]
-    )
+    course_id = courses_col[1:index - 1],
+    student_id = students_col[1:index - 1],
+    grade = grades_col[1:index - 1]
+  )
 
   final_grades
 }

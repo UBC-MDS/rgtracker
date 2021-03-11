@@ -27,12 +27,12 @@ Calculate the average grade for a specified number of students and ranks
 them for a specific course or for the whole program completed thus far.
 }
 \examples{
-df <- data.frame(course_id  = c(rep("511", 4)),
-student_id =  c("tom", "tiff", "mike", "joel"),
-grade = c(90, 80, 70, 67)
-
+df <- data.frame(
+  course_id = c(rep("511", 4)),
+  student_id = c("tom", "tiff", "mike", "joel"),
+  grade = c(90, 80, 70, 67)
 )
 
 rank_students(df = df)
-rank_students(df= df, courseid = "511", n = 3, ascending = TRUE)
+rank_students(df = df, courseid = "511", n = 3, ascending = TRUE)
 }

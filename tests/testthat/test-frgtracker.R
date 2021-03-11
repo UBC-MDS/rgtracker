@@ -1,108 +1,113 @@
-#function1 start
+# function1 start
 
-#function1 end
+# function1 end
 
-#function2 start
+# function2 start
 
-#function2 end
+# function2 end
 
-#function3 start
+# function3 start
 
-#function3 end
+# function3 end
 
-#function4 start
+# function4 start
 
-#function4 end
+# function4 end
 
-#function5 start
+# tests for rank_students start
 
-generate_fake_dataframe <- function(){
-  df <- data.frame (course_id  = c(rep("511", 4), rep("522", 4)),
-                    student_id =  c("tom", "tiff","mike","joel",
-                                    "tom","tiff","mike","joel"),
-                    grade = c(90, 70, 60, 50, 95, 91, 85, 80)
+generate_fake_dataframe <- function() {
+  df <- data.frame(
+    course_id = c(rep("511", 4), rep("522", 4)),
+    student_id = c(
+      "tom", "tiff", "mike", "joel",
+      "tom", "tiff", "mike", "joel"
+    ),
+    grade = c(90, 70, 60, 50, 95, 91, 85, 80)
   )
   df
 }
 
 
-generate_fake_dataframe_output_511_course <- function(){
-  df <- data.frame (student_id = c("tom", "tiff","mike","joel"),
-                    grade = c(90, 70, 60, 50),
-                    rank = c(1, 2, 3, 4)
+generate_fake_dataframe_outputs <- function(courseid, grade) {
+  df <- data.frame(
+    student_id = c("tom", "tiff", "mike", "joel"),
+    grade = grade,
+    rank = c(1, 2, 3, 4)
   )
   df
 }
 
-generate_fake_dataframe_output_522_course <- function(){
-  df <- data.frame (student_id = c("tom", "tiff","mike","joel"),
-                    grade = c(95, 91, 85, 80),
-                    rank = c(1, 2, 3, 4)
+generate_fake_matrix <- function() {
+  matrix_ex <- matrix(
+    data = c(
+      c(rep("511", 4), rep("522", 4)),
+      c(
+        "tom", "tiff", "mike", "joel", "tom",
+        "tiff", "mike", "joel"
+      ),
+      c(
+        84.66, 88.34, 87.66, 90.82, 95.52,
+        87.92, 88.92, 92.80
+      )
+    ),
+    nrow = 8,
+    ncol = 3
   )
-  df
-}
-
-generate_fake_dataframe_output_all_course <- function(){
-  df <- data.frame (student_id = c("tom", "tiff","mike","joel"),
-                    grade = c(92.5, 80.5, 72.5, 65),
-                    rank = c(1, 2, 3, 4)
-  )
-  df
-}
-
-
-generate_fake_matrix <- function(){
-  matrix_ex <- matrix(data = c(c(rep("511",4), rep("522", 4)),
-                               c("tom", "tiff","mike","joel","tom",
-                                 "tiff","mike","joel"),
-                               c(84.66, 88.34, 87.66, 90.82, 95.52,
-                                 87.92, 88.92, 92.80)),
-                      nrow = 8,
-                      ncol = 3)
+  matrix_ex
 }
 
 
 test_that("Incorrect input types should throw an error", {
-  temp_df = generate_fake_dataframe()
+  temp_df <- generate_fake_dataframe()
 
   expect_error(rank_students(df = generate_fake_matrix()))
   expect_error(rank_students(df = temp_df, courseid = 512))
   expect_error(rank_students(df = temp_df, n = "3"))
   expect_error(rank_students(df = temp_df, n = -3))
   expect_error(rank_students(df = temp_df, n = 3.5))
-  expect_error(nrow(rank_students(df = temp_df,courseid="511", n = 5)))
+  expect_error(nrow(rank_students(df = temp_df, courseid = "511", n = 5)))
   expect_error(rank_students(df = temp_df, ascending = "TRUE"))
 })
 
 test_that("Dataframe should be equal", {
-  temp_df = generate_fake_dataframe()
-  expect_equal(rank_students(df = temp_df,courseid="511"),
-                   generate_fake_dataframe_output_511_course())
-  expect_equal(rank_students(df = temp_df,courseid="522"),
-               generate_fake_dataframe_output_522_course())
-  expect_equal(rank_students(df = temp_df,courseid="all"),
-               generate_fake_dataframe_output_all_course())
+  temp_df <- generate_fake_dataframe()
+  expect_equal(
+    rank_students(df = temp_df, courseid = "511"),
+    generate_fake_dataframe_outputs(courseid = "511",
+                                    c(90, 70, 60, 50))
+  )
+  expect_equal(
+    rank_students(df = temp_df, courseid = "522"),
+    generate_fake_dataframe_outputs(courseid = "522",
+                                    c(95, 91, 85, 80))
+  )
+  expect_equal(
+    rank_students(df = temp_df, courseid = "all"),
+    generate_fake_dataframe_outputs(courseid = "all",
+                                    c(92.5, 80.5, 72.5, 65))
+  )
 })
 
 test_that("Grade should be between 0 and 100", {
-  temp_df = generate_fake_dataframe()
+  temp_df <- generate_fake_dataframe()
   expect_false(any(temp_df$grade < 0))
   expect_false(any(temp_df$grade > 100))
 })
 
 test_that("NAs should be dropped", {
-  temp_df = generate_fake_dataframe()
+  temp_df <- generate_fake_dataframe()
 
   expect_false(is.null(rank_students(df = temp_df)))
 })
 
-#function5 end
+# tests for rank_students end
 
-#function6 start
+# function6 start
 
-#function6 end
+# function6 end
 
-#tests for calculate_final_grade start
+# tests for calculate_final_grade start
 generate_courses_calculate_final_grade <- function() {
   courses <- data.frame(
     course_id = c(511, 522),
@@ -144,7 +149,7 @@ generate_grades_calculate_final_grade <- function() {
 
 generate_final_grade_calculate_final_grade <- function(course_id, grade) {
   final_grades <- data.frame(
-    course_id = rep(course_id, n=4),
+    course_id = rep(course_id, n = 4),
     student_id = c("tom", "tiff", "mike", "joel"),
     grade = grade
   )
@@ -180,7 +185,7 @@ test_that("The output of calculate_final_grade is incorrect", {
   expected_output <- generate_final_grade_calculate_final_grade(
     "511",
     c(84.66, 88.34, 87.66, 90.82)
-    )
+  )
   expect_equal(output, expected_output)
 
   course_ids <- c("522")
@@ -192,4 +197,4 @@ test_that("The output of calculate_final_grade is incorrect", {
   )
   expect_equal(output, expected_output)
 })
-#tests for calculate_final_grade end
+# tests for calculate_final_grade end

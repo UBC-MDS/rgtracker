@@ -24,3 +24,6 @@ A dataframe containing the rank for specified courses
 Calculate students' course grades to rank courses in ascending/descending order by a
 specified method.
 }
+\examples{
+
+}
