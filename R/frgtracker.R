@@ -2,7 +2,8 @@
 
 # register_courses start
 
-#'Read and store the input data frame into a data frame of courses to be registered.
+#'Read and store the input data frame into a data frame of courses to be
+#'registered.
 #'
 #'For each of the course, the weights of all assessments should sum up to 1.
 #'The weights of individual assessment should be between 0 and 1.
@@ -17,6 +18,12 @@
 #' @example
 #'register_courses(course_df)
 register_courses <- function(df){
+
+  df <- df %>%
+    pivot_wider(names_from = assessment_id, values_from = weight,
+                values_fill = 0)
+  df$course_id <- as.character(df$course_id)
+  df
 
 }
 
@@ -39,6 +46,11 @@ register_courses <- function(df){
 #'record_grades(grade_df)
 record_grades <- function(df){
 
+  df <- df %>%
+    pivot_wider(names_from = assessment_id, values_from = grade,
+                values_fill = 0)
+  df$course_id <- as.character(df$course_id)
+  df
 }
 
 # record_grades end
@@ -66,7 +78,7 @@ generate_course_statistics <- function(course_ids) {
 #' Calculate students' course grades to rank courses in ascending/descending order by a
 #' specified method.
 #'
-#' @param method one of "method", "median", "lst-quantile", "3rd-quantile", defining 
+#' @param method one of "method", "median", "lst-quantile", "3rd-quantile", defining
 #' the method for calculating the course rankings.
 #' @param descending A logical value to decide if the rank should be in descending or
 #' ascending order. Default to True
