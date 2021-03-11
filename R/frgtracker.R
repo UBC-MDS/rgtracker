@@ -1,5 +1,41 @@
 
+mds_courses <- c(511,
+                 512,
+                 513,
+                 521,
+                 522,
+                 523,
+                 524,
+                 525,
+                 531,
+                 532,
+                 541,
+                 542,
+                 551,
+                 552,
+                 553,
+                 554,
+                 561,
+                 562,
+                 563,
+                 571,
+                 572,
+                 573,
+                 574,
+                 575,
+                 591)
 
+mds_assess <- c("lab1",
+                "lab2",
+                "lab3",
+                "lab4",
+                "milestone1",
+                "milestone2",
+                "milestone3",
+                "milestone4",
+                "feedback",
+                "quiz1",
+                "quiz2")
 # register_courses start
 
 #'Read and store the input data frame into a data frame of courses to be
@@ -19,8 +55,27 @@
 #'register_courses(course_df)
 register_courses <- function(df){
 
+  if (sum(df$course_id %in% mds_courses) != nrow(df)) {
+    stop("I only work on MDS courses! You have at least one is not.")
+  }
+
+  if ( ){
+    stop("I only work on MDS assessments! You have at least one is not.")
+  }
+
+  if( ){
+    stop("You have at least one assessment weight is negative!")
+  }
+
+  if (){
+    stop("The sum of all assessment weights should be 1 for individual
+         courses!")
+  }
 
 
+  if (){
+
+  }
 
 
   df <- df %>%
@@ -49,6 +104,19 @@ register_courses <- function(df){
 #' @example
 #'record_grades(grade_df)
 record_grades <- function(df){
+
+  if (sum(df$course_id %in% mds_courses) != nrow(df)) {
+    stop("I only work on MDS courses! You have at least one is not.")
+  }
+
+  if ( ){
+    stop("I only work on MDS assessments! You have at least one is not.")
+  }
+
+  if( ){
+    stop("The grade range should be between 0 and 100!")
+  }
+
 
   df <- df %>%
     pivot_wider(names_from = assessment_id, values_from = grade,
