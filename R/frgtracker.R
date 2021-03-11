@@ -1,5 +1,4 @@
 
-
 # register_courses start
 
 #'Read and store the input data frame into a data frame of courses to be registered.
@@ -82,67 +81,88 @@ rank_courses <- function(method= c("method", "median", "lst-quantile", "3rd-quan
 
 # function4 end
 
-# function5 start
+# start Rank Students
 
 #' Ranks students by their grade for a course or the program.
 #'
 #' Calculate the average grade for a specified number of students and ranks
 #' them for a specific course or for the whole program completed thus far.
 #'
-#' @param course_id A string representing the course ID for which the ranking
+#' @param courseid A string representing the course ID for which the ranking
 #' should be calculated for. Defaults to "all" for all courses completed thus far.
 #' @param n An integer value that represents the number of students for which the
 #' ranking is required for. Defaults to 3.
 #' @param ascending A logical value indicating whether the top or bottom ranking
 #' of students is required. Defaults to FALSE.
-#' @param df A dataframe containing the final grades for each student per course
+#' @param df A dataframe containing the final grades for each student per course.
 #'
 #' @return A dataframe containing the rank of the students for the course or
-#' the program
+#' for all the program completed thus far.
 #' @export
 #'
 #' @examples
-#' rank_students(df)
-#' rank_students(df, course_id = "511", n = 3, ascending = TRUE)
-rank_students <- function(df,course_id = "all", n = 4, ascending = FALSE) {
+#' df <- data.frame(course_id  = c(rep("511", 4)),
+#' student_id =  c("tom", "tiff", "mike", "joel"),
+#' grade = c(90, 80, 70, 67)
+#'
+#' )
+#'
+#' rank_students(df = df)
+#' rank_students(df= df, courseid = "511", n = 3, ascending = TRUE)
+rank_students <- function(df, courseid = "all", n = 4, ascending = FALSE) {
 
-  if (!is.numeric(n) | !is.character(course_id) | !is.logical(ascending) |
-      !is.data.frame(df)) {
-    stop("Input value is not the correct type. Check documentation")
+  if (!is.numeric(n)) {
+    stop("Input value n argument can only by a numeric value")
   }
 
-  if (n >= 0 | n%%1!=0 | n <= length(unique(df$student_id))){
-    stop("The input for n is wrong. Check documentation")
+  if (!is.character(courseid)) {
+    stop("Course id can only be a string")
   }
 
-  if (.courseid %in% list(unique(df$course_id))){
-    stop("The input for n is wrong. Check documentation")
+  if (!is.logical(ascending)) {
+    stop("Ascending value can only be a logical value")
   }
 
+  if (!is.data.frame(df)) {
+    stop("Input for df argument can only be a dataframe")
+  }
 
-  slicer <- ifelse(ascending, slice_min, slice_max)
+  if (n <= 0){
+    stop("The input for n can only be a positive integer.")
+  }
 
-  courses_list <- list(unique(df$course_id))
+  if (n%%1 != 0){
+    stop("The input for n can only be a integer.")
+  }
 
-  df <- calculate_final_grade(courses, grades, course_ids = courses_list)
+  if (n > length(unique(df$student_id))){
+    stop("The input for n can not greater than the total number of students")
+  }
+
+  if (!(courseid %in% c(unique(df$course_id), "all"))){
+    stop("This course is currently not a part of the courses list")
+  }
+
+  slicer <- ifelse(ascending, dplyr::slice_min, dplyr::slice_max)
 
   temp_df <- df
 
-  if (.courseid != "all"){
+  if (courseid != "all"){
     temp_df <-	df %>%
-      dplyr::filter(course_id == .courseid)
+      dplyr::filter(.data$course_id == courseid)
   }
 
   avg_df <- temp_df %>%
-    dplyr::group_by(student_id) %>%
-    dplyr::summarise(grade = mean(grade)) %>%
-    dplyr::mutate(rank = rank(-grade)) %>%
-    dplyr::slicer(grade, n = n)
-  avg_df
+    dplyr::group_by(.data$student_id) %>%
+    dplyr::summarise(grade = mean(.data$grade)) %>%
+    dplyr::mutate(rank = rank(-.data$grade,
+                              ties.method= "random", na.last = NA)) %>%
+    slicer(.data$grade, n = n)
+
+  as.data.frame(avg_df)
 }
 
-
-# function5 end
+# end Rank Students
 
 # start Suggest Grade Adjustment
 
