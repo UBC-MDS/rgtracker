@@ -1,4 +1,34 @@
 
+grades <- data.frame(
+  course_id = c(511, 511, 511, 511, 522, 522, 522, 522),
+  student_id = c("tom", "tiff", "mike", "joel", "tom", "tiff", "mike", "joel"),
+  lab1 = c(100, 87.6, 84.4, 100, 0, 0, 0, 0),
+  lab2 = c(100, 100, 79.6, 100, 0, 0, 0, 0),
+  lab3 = c(79.2, 81.2, 75.2, 99.6, 0, 0, 0, 0),
+  lab4 = c(83.6, 89.2, 98.8, 71.2, 0, 0, 0, 0),
+  quiz1 = c(75.6, 100, 84.8, 96.8, 0, 0, 0, 0),
+  quiz2 = c(75.6, 73.2, 100, 79.2, 0, 0, 0, 0),
+  milestone1 = c(0, 0, 0, 0, 100, 100, 92, 98.4),
+  milestone2 = c(0, 0, 0, 0, 97.6, 77.2, 75.6, 85.6),
+  milestone3 = c(0, 0, 0, 0, 80, 76.8, 97.6, 96.8),
+  milestone4 = c(0, 0, 0, 0, 100, 100, 84.4, 100),
+  feedback = c(0, 0, 0, 0, 100, 85.6, 98.8, 82.4)
+)
+courses <- data.frame(
+  course_id = c(511, 522),
+  lab1 = c(0.15, 0),
+  lab2 = c(0.15, 0),
+  lab3 = c(0.15, 0),
+  lab4 = c(0.15, 0),
+  quiz1 = c(0.2, 0),
+  quiz2 = c(0.2, 0),
+  milestone1 = c(0, 0.1),
+  milestone2 = c(0, 0.2),
+  milestone3 = c(0, 0.2),
+  milestone4 = c(0, 0.3),
+  feedback = c(0, 0.2)
+)
+
 
 # register_courses start
 
@@ -54,9 +84,30 @@ record_grades <- function(df){
 #' @export
 #'
 #' @examples
+#' generate_course_statistics(course_ids = "511")
+#' generate_course_statistics(course_ids = c("511", "522"))
 
 generate_course_statistics <- function(course_ids) {
-  print("NULL")
+  if (!is.character(course_ids)){
+    stop("course_ids must be a vector including characters")
+  }
+  if (length(subset(courses$course_id, courses$course_id == course_ids))==0) {
+    stop("The course is currently not a part of the courses list")
+  }
+
+  final_grade <- calculate_final_grade(courses, grades, course_ids)
+  statistics <- data.frame(matrix(ncol=5, nrow=0))
+  colnames(statistics) <- c("course_id", "mean", "1st-quantile", "median", "3rd-quantile")
+  for (i in 1:length(course_ids)){
+    temp_df <- final_grade %>%
+      dplyr::filter(.data$course_id == course_ids[i])
+    statistics[i,] <- c(course_ids[i],
+                    mean(temp_df$grade),
+                    quantile(temp_df$grade, 0.25),
+                    median(temp_df$grade),
+                    quantile(temp_df$grade, 0.75))
+  }
+  statistics
 }
 
 # function3 end
@@ -66,7 +117,7 @@ generate_course_statistics <- function(course_ids) {
 #' Calculate students' course grades to rank courses in ascending/descending order by a
 #' specified method.
 #'
-#' @param method one of "method", "median", "lst-quantile", "3rd-quantile", defining 
+#' @param method one of "method", "median", "lst-quantile", "3rd-quantile", defining
 #' the method for calculating the course rankings.
 #' @param descending A logical value to decide if the rank should be in descending or
 #' ascending order. Default to True
@@ -75,9 +126,26 @@ generate_course_statistics <- function(course_ids) {
 #' @export
 #'
 #' @examples
+#' rank_courses("mean")
+#' rank_courses("median", descending=FALSE)
 
-rank_courses <- function(method= c("method", "median", "lst-quantile", "3rd-quantile"), descending=True) {
-  print("NULL")
+rank_courses <- function(method=c("course_id", "mean", "1st-quantile", "median", "3rd-quantile"), descending=TRUE) {
+  valid = c("mean", "median", "lst-quantile", "3rd-quantile")
+  if (length(subset(valid, valid == method))==0){
+    stop("method only accepts 'mean', '1st-quantile', 'median' or '3rd-quantile'")
+  }
+  if (!is.logical(descending)){
+    stop("descending must be logical value")
+  }
+
+  course_list = as.character(courses$course_id)
+
+  course_rank <- generate_course_statistics(course_list) %>%
+    dplyr::select(c("course_id", as.character(method)))
+  colnames(course_rank) <- c("course_id", "grade")
+  course_rank <- course_rank[order(course_rank$grade, decreasing = descending),]
+
+  course_rank
 }
 
 # function4 end
@@ -312,10 +380,7 @@ calculate_final_grade <- function(courses, grades, course_ids)
     stop("course_ids must be a vector")
   }
 
-  # As R discourages adding element to vector / list, we initialize these vectors
-  # with large number of elements, and keep track how many elements added to
-  # these vectors
-  # 25 courses & 150 students
+
   LARGE <- 25 * 150
   courses_col <- character(LARGE)
   students_col <- character(LARGE)
