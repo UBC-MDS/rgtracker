@@ -3,6 +3,63 @@
 test_that("multiplication works", {
   expect_equal(2 * 2, 4)
 })
+
+generate_input_courses_df <- function() {
+  courses <- data.frame(
+    course_id = c(rep(511, 6), rep(522, 5)),
+    assessment_id = c(
+    "lab1",
+    "lab2",
+    "lab3",
+    "lab4",
+    "quiz1",
+    "quiz2",
+    "milestone1",
+    "milestone2",
+    "milestone3",
+    "milestone4",
+    "feedback"
+  ),
+  weight = c(
+    rep(.15, 4), rep(.2, 2), .1, rep(.2, 2), .3, .2
+  )
+  )
+
+  courses
+}
+
+
+generate_input_grades_df <- function(course_id=c(rep(511, 6)),
+                                     student_id = c(rep('james', 6)),
+                                     assessment_id=c("lab1", "lab2", "lab3",
+                                                     "lab4", "quiz1", "quiz2"),
+                                     grade = c(rep(88, 4), rep(93.2, 2))) {
+  grades <- data.frame(
+    course_id = course_id,
+    student_id = student_id,
+    assessment_id = assessment_id,
+    grade = grade
+  )
+
+  grades
+}
+
+
+test_that("At least one of you course id is not MDS-courses as far as I know!",{
+  df <- generate_input_courses_df()
+  df$course_id <- c(rep(523, 6), rep(577, 5))
+
+  expect_error(register_courses(df))
+})
+
+
+test_that("At least one of your assessment id is not MDS-courses as far as I
+          know!",{
+  df <- generate_courses_calculate_final_grade()
+  df$course_id <- c(523, 577)
+
+  expect_error(register_courses(df))
+})
 #function1 end
 
 #function2 start
