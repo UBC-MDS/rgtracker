@@ -350,6 +350,9 @@ calculate_final_grade <- function(courses, grades, course_ids)
   }
 
   # As R discourages adding element to vector / list, we initialize these vectors
+  # with large number of elements, and keep track how many elements added to
+  # these vectors
+  # 25 courses & 150 students
   LARGE <- 25 * 150
   courses_col <- character(LARGE)
   students_col <- character(LARGE)
