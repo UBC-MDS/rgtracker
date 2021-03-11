@@ -75,6 +75,7 @@ generate_course_statistics <- function(course_ids) {
                     median(temp_df$grade),
                     quantile(temp_df$grade, 0.75))
   }
+  
   statistics
 }
 
