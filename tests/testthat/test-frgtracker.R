@@ -6,24 +6,18 @@ test_that("multiplication works", {
 
 generate_input_courses_df <- function() {
   courses <- data.frame(
-    course_id = c(rep(511, 6), rep(522, 5)),
+    course_id = c(rep(511, 6)),
     assessment_id = c(
     "lab1",
     "lab2",
     "lab3",
     "lab4",
     "quiz1",
-    "quiz2",
-    "milestone1",
-    "milestone2",
-    "milestone3",
-    "milestone4",
-    "feedback"
+    "quiz2"
   ),
   weight = c(
-    rep(.15, 4), rep(.2, 2), .1, rep(.2, 2), .3, .2
-  )
-  )
+    rep(.15, 4), rep(.2, 2)
+  ))
 
   courses
 }
@@ -47,7 +41,7 @@ generate_input_grades_df <- function(course_id=c(rep(511, 6)),
 
 test_that("At least one of you course id is not MDS-courses as far as I know!",{
   df <- generate_input_courses_df()
-  df$course_id <- c(rep(523, 6), rep(577, 5))
+  df$course_id <- c(rep(571, 5), 577)
 
   expect_error(register_courses(df))
 })
@@ -55,11 +49,31 @@ test_that("At least one of you course id is not MDS-courses as far as I know!",{
 
 test_that("At least one of your assessment id is not MDS-courses as far as I
           know!",{
-  df <- generate_courses_calculate_final_grade()
-  df$course_id <- c(523, 577)
+  df <- generate_input_courses_df()
+  df$assessment_id <- c("lab5")
 
   expect_error(register_courses(df))
 })
+
+test_that("The sum of the weights for individual MDS-courses should be 1!"{
+  df <- generate_input_courses_df()
+  df$weight <- c(.16, rep(.15, 3), rep(.2, 2))
+
+  expect_error(register_courses(df))
+
+})
+
+
+
+test_that("I saw you have at least one negative course weight, should be
+          between 0 and 1 :)"{
+            df <- generate_input_courses_df()
+            df$weight <- c(-.15, .3, rep(.15, 2), rep(.2, 2))
+
+            expect_error(register_courses(df))
+
+          })
+
 #function1 end
 
 #function2 start
