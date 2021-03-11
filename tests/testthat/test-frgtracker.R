@@ -23,19 +23,20 @@ test_that("The output of generate_course_statistics is incorrect", {
   grade_511 <- c(84.66, 88.34, 87.66, 90.82)
   grade_522 <- c(95.52, 87.92, 88.92, 92.80)
 
-  output <- as.numeric(generate_course_statistics(course_ids)[1,2])
+  stats <- generate_course_statistics(course_ids)
+  output <- as.numeric(stats[1,2])
   expected_output <- mean(grade_511)
   expect_equal(output, expected_output)
 
-  output<- as.numeric(generate_course_statistics(course_ids)[2,4])
+  output<- as.numeric(stats[2,4])
   expected_output <- median(grade_522)
   expect_equal(output, expected_output)
 
-  output <- as.numeric(generate_course_statistics(course_ids)[1,3])
+  output <- as.numeric(stats[1,3])
   expected_output <- as.numeric(quantile(grade_511, 0.25))
   expect_equal(output, expected_output)
 
-  output <- as.numeric(generate_course_statistics(course_ids)[2,5])
+  output <- as.numeric(stats[2,5])
   expected_output <- as.numeric(quantile(grade_522, 0.75))
   expect_equal(output, expected_output)
 })
