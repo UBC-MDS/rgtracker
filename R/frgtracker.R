@@ -194,9 +194,9 @@ suggest_grade_adjustment <- function(courses, grades, id,
     dplyr::filter(.data$weight > 0) %>%
     dplyr::pull(.data$component)
 
+  # adjust quizzes and labs
   for (i in 1:length(components)) {
     component <- components[i]
-    print(component)
 
     benchmark <- benchmark_lab
     if (startsWith(component, "quiz")) {
@@ -206,19 +206,61 @@ suggest_grade_adjustment <- function(courses, grades, id,
     component_grades <- grades %>%
       dplyr::pull(get(component))
 
-    avg <- component_grades %>%
+    avg_component <- component_grades %>%
       mean()
 
-    while (avg < benchmark) {
+    while (avg_component < benchmark) {
       component_grades <- component_grades %>%
         sapply(function(x) min(x + 1L, 100L))
 
-      avg <- component_grades %>%
+      avg_component <- component_grades %>%
         mean()
     }
     grades[component] <- component_grades
-
   }
+
+  # adjust course
+  for (i in 1:length(components)) {
+    component <- components[i]
+
+    avg_course <- calculate_final_grade(courses, grades, id) %>%
+      dplyr::pull(.data$grade) %>%
+      mean()
+
+    if (avg_course >= benchmark_course) {
+      break
+    }
+
+    component_grades <- grades %>%
+      dplyr::pull(get(component))
+
+    avg_component <- component_grades %>%
+      mean()
+
+    component_weight <- courses %>%
+      dplyr::pull(get(component))
+
+    diff <- (100 - avg_component) * component_weight
+
+    if (avg_course + diff < benchmark_course) {
+      # let everyone have 100 marks
+      grades[component] <- rep(100, n=length(component_grades))
+    } else {
+      # increase gradually until it meets the benchmark
+      while (TRUE) {
+        component_grades <- component_grades %>%
+          sapply(function(x) min(x + 1L, 100L))
+
+        diff <- (mean(component_grades) - avg_component) * component_weight
+
+        if (avg_course + diff >= benchmark_course) {
+          grades[component] <- component_grades
+          break
+        }
+      }
+    }
+  }
+
   grades
 }
 
@@ -299,7 +341,12 @@ calculate_final_grade <- function(courses, grades, course_ids)
     course_grades <- course_grades %>%
       dplyr::select(-.data$student_id)
 
-    temp <- data.frame(mapply(`*`,course_grades, weights[1,])) %>% rowSums()
+    if (nrow(course_grades) > 1) {
+      temp <- data.frame(mapply(`*`,course_grades, weights[1,])) %>% rowSums()
+    } else {
+      temp <- data.frame(mapply(`*`,course_grades, weights[1,])) %>% sum()
+    }
+
     num_elements <- course_grades %>%
       nrow()
 
