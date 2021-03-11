@@ -68,7 +68,9 @@ register_courses <- function(df){
     stop("You have at least one assessment weight is negative!")
   }
 
-  w_sum_df <- df %>% group_by(course_id) %>% summarise(w_sum = sum(weight))
+  w_sum_df <- df %>%
+    group_by(course_id) %>%
+    summarise(w_sum = sum(weight))
 
   if (sum(w_sum_df$w_sum) != nrow(w_sum_df)) {
     stop("The sum of all assessment weights should be 1 for individual
@@ -81,6 +83,7 @@ register_courses <- function(df){
     pivot_wider(names_from = assessment_id, values_from = weight,
                 values_fill = 0)
   df$course_id <- as.character(df$course_id)
+  df <- as.data.frame(df)
   df
 
 }
@@ -121,6 +124,7 @@ record_grades <- function(df){
     pivot_wider(names_from = assessment_id, values_from = grade,
                 values_fill = 0)
   df$course_id <- as.character(df$course_id)
+  df <- as.data.frame(df)
   df
 }
 

@@ -1,22 +1,25 @@
-#function1 start
+#register_courses function start
 #remove when actual tests are added
-test_that("multiplication works", {
-  expect_equal(2 * 2, 4)
-})
+
 
 generate_input_courses_df <- function() {
   courses <- data.frame(
-    course_id = c(rep(511, 6)),
+    course_id = c(rep(511, 6), rep(522, 5)),
     assessment_id = c(
     "lab1",
     "lab2",
     "lab3",
     "lab4",
     "quiz1",
-    "quiz2"
+    "quiz2",
+    "milestone1",
+    "milestone2",
+    "milestone3",
+    "milestone4",
+    "feedback"
   ),
   weight = c(
-    rep(.15, 4), rep(.2, 2)
+    rep(.15, 4), rep(.2, 2), .1, .2, .2, .3, .2
   ))
 
   courses
@@ -40,8 +43,12 @@ generate_input_grades_df <- function(course_id=c(rep(511, 6)),
 
 
 test_that("At least one of you course id is not MDS-courses as far as I know!",{
+
   c_df <- generate_input_courses_df()
   c_df$course_id <- c(rep(571, 5), 577)
+
+  g_df <- generate_input_grades_df()
+  g_df$course_id[6] <- 533
 
   expect_error(register_courses(c_df))
   expect_error(record_grades(g_df))
@@ -53,11 +60,14 @@ test_that("At least one of your assessment id is not MDS-courses as far as I
   c_df <- generate_input_courses_df()
   c_df$assessment_id <- c("lab5")
 
+  g_df <- generate_input_grades_df()
+  g_df$assessment_id[2] <- "quiz0"
+
   expect_error(register_courses(c_df))
   expect_error(record_grades(g_df))
 })
 
-test_that("The sum of the weights for individual MDS-courses should be 1!",{
+test_that("The all weights for individual MDS-courses should add up to 1!",{
   df <- generate_input_courses_df()
   df$weight <- c(.16, rep(.15, 3), rep(.2, 2))
 
@@ -66,7 +76,7 @@ test_that("The sum of the weights for individual MDS-courses should be 1!",{
 
 
 
-test_that("I saw you have at least one negative course weight, should be
+test_that("I saw you have at least one negative course weight, which should be
           between 0 and 1 :)", {
             df <- generate_input_courses_df()
             df$weight <- c(-.15, .45, rep(.15, 2), rep(.2, 2))
@@ -78,11 +88,12 @@ test_that("I saw you have at least one negative course weight, should be
 
 test_that("The output of the courses data frame is incorrect!", {
 
-  in_df <-
-  out_df <-
+  in_df <- generate_input_courses_df()
+  out_df <- generate_courses_calculate_final_grade()
+  out_df$course_id <- as.character(out_df$course_id)
 
-
-  expect_equal(in_df, out_df)
+  expect_equal(register_courses(in_df),
+               out_df)
 })
 
 #function1 end
@@ -96,7 +107,18 @@ test_that("Oops I only deal with grade records out of 100!", {
 
 test_that("The output of the grades data frame is incorrect!", {
 
-  expect_equal(in_df, out_df)
+  in_df <- generate_input_grades_df()
+  out_df <- generate_grades_calculate_final_grade()
+  out_df$course_id <- "511"
+  out_df$student_id <- "james"
+  out_df$lab1 <- 88
+  out_df$lab2 <- 88
+  out_df$lab3 <- 88
+  out_df$lab4 <- 88
+  out_df$quiz1 <- 93.2
+  out_df$quiz2 <- 93.2
+
+  expect_equal(record_grades(in_df), out_df)
 })
 
 #function2 end
@@ -208,3 +230,4 @@ test_that("The output of calculate_final_grade is incorrect", {
   expect_equal(output, expected_output)
 })
 #tests for calculate_final_grade end
+
