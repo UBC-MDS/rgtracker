@@ -59,7 +59,7 @@ register_courses <- function(df){
     stop("I only work on MDS courses! You have at least one is not.")
   }
 
-  if ( ){
+  if (sum(df$assessment_id %in% mds_assess) != nrow(df)){
     stop("I only work on MDS assessments! You have at least one is not.")
   }
 
@@ -109,7 +109,7 @@ record_grades <- function(df){
     stop("I only work on MDS courses! You have at least one is not.")
   }
 
-  if ( ){
+  if (sum(df$assessment_id %in% mds_assess) != nrow(df)){
     stop("I only work on MDS assessments! You have at least one is not.")
   }
 
