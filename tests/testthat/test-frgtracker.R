@@ -1,6 +1,4 @@
 #register_courses function start
-#remove when actual tests are added
-
 
 generate_input_courses_df <- function() {
   courses <- data.frame(
@@ -96,32 +94,38 @@ test_that("The output of the courses data frame is incorrect!", {
                out_df)
 })
 
-#function1 end
+#register_courses function end
 
-#function2 start
+#record_courses function start
 
 test_that("Oops I only deal with grade records out of 100!", {
+  df <- generate_input_grades_df()
+  df$grade[5] <- 100.1
 
+  df1 <- generate_input_grades_df()
+  df1$grade[2] <- -89.8
 
+  expect_error(record_grades(df))
+  expect_error(record_grades(df1))
 })
 
 test_that("The output of the grades data frame is incorrect!", {
 
   in_df <- generate_input_grades_df()
-  out_df <- generate_grades_calculate_final_grade()
-  out_df$course_id <- "511"
-  out_df$student_id <- "james"
-  out_df$lab1 <- 88
-  out_df$lab2 <- 88
-  out_df$lab3 <- 88
-  out_df$lab4 <- 88
-  out_df$quiz1 <- 93.2
-  out_df$quiz2 <- 93.2
+
+  out_df <- data.frame(course_id = "511",
+                       student_id = "james",
+                       lab1 = 88,
+                       lab2 = 88,
+                       lab3 = 88,
+                       lab4 = 88,
+                       quiz1 = 93.2,
+                       quiz2 = 93.2)
 
   expect_equal(record_grades(in_df), out_df)
 })
 
-#function2 end
+#record_grades function end
 
 #function3 start
 
