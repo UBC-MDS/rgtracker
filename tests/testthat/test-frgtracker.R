@@ -9,7 +9,7 @@ test_that("multiplication works", {
 
 #function2 end
 
-#function3 start
+#tests for generate_course_statistics start
 test_that("The input of generate_course_statistics is not valid", {
   course_ids <- c("530", "540")
   expect_error(generate_course_statistics(course_ids))
@@ -50,9 +50,9 @@ test_that("The output of generate_course_statistics is not valid", {
   expect_equal(nrow(output), 2)
 })
 
-#function3 end
+#tests for generate_course_statistics end
 
-#function4 start
+#tests for rank_courses start
 
 test_that("The input of rank_courses is not valid", {
   expect_error(rank_courses(method="avg", descending=TRUE))
@@ -86,7 +86,7 @@ test_that("The output of rank_courses is not valid", {
   expect_equal(colnames(output), c("course_id", "grade"))
 })
 
-#function4 end
+#tests for rank_courses end
 
 #function5 start
 
