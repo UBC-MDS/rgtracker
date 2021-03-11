@@ -16,3 +16,7 @@ A dataframe containing the summary statistics for specified courses
 \description{
 Calculate the summary statistics for specified courses including mean, median and quantiles.
 }
+\examples{
+generate_course_statistics(course_ids = "511")
+generate_course_statistics(course_ids = c("511", "522"))
+}
