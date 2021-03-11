@@ -1,4 +1,5 @@
 
+# library(tidyverse)
 mds_courses <- c(511,
                  512,
                  513,
@@ -63,19 +64,17 @@ register_courses <- function(df){
     stop("I only work on MDS assessments! You have at least one is not.")
   }
 
-  if( ){
+  if (sum(df$weight >= 0) != nrow(df)){
     stop("You have at least one assessment weight is negative!")
   }
 
-  if (){
+  w_sum_df <- df %>% group_by(course_id) %>% summarise(w_sum = sum(weight))
+
+  if (sum(w_sum_df$w_sum) != nrow(w_sum_df)) {
     stop("The sum of all assessment weights should be 1 for individual
          courses!")
   }
 
-
-  if (){
-
-  }
 
 
   df <- df %>%
@@ -113,7 +112,7 @@ record_grades <- function(df){
     stop("I only work on MDS assessments! You have at least one is not.")
   }
 
-  if( ){
+  if(sum(df$grade < 0) > 0 | sum(df$grade > 100) > 0){
     stop("The grade range should be between 0 and 100!")
   }
 
