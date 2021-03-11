@@ -19,6 +19,10 @@
 #'register_courses(course_df)
 register_courses <- function(df){
 
+
+
+
+
   df <- df %>%
     pivot_wider(names_from = assessment_id, values_from = weight,
                 values_fill = 0)

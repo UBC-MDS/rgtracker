@@ -2,7 +2,8 @@
 % Please edit documentation in R/frgtracker.R
 \name{register_courses}
 \alias{register_courses}
-\title{Read and store the input data frame into a data frame of courses to be registered.}
+\title{Read and store the input data frame into a data frame of courses to be
+registered.}
 \usage{
 register_courses(df)
 }

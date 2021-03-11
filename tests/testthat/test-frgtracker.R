@@ -55,18 +55,17 @@ test_that("At least one of your assessment id is not MDS-courses as far as I
   expect_error(register_courses(df))
 })
 
-test_that("The sum of the weights for individual MDS-courses should be 1!"{
+test_that("The sum of the weights for individual MDS-courses should be 1!",{
   df <- generate_input_courses_df()
   df$weight <- c(.16, rep(.15, 3), rep(.2, 2))
 
   expect_error(register_courses(df))
-
 })
 
 
 
 test_that("I saw you have at least one negative course weight, should be
-          between 0 and 1 :)"{
+          between 0 and 1 :)", {
             df <- generate_input_courses_df()
             df$weight <- c(-.15, .3, rep(.15, 2), rep(.2, 2))
 
