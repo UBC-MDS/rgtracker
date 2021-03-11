@@ -349,7 +349,7 @@ calculate_final_grade <- function(courses, grades, course_ids)
     stop("course_ids must be a vector")
   }
 
-
+  # As R discourages adding element to vector / list, we initialize these vectors
   LARGE <- 25 * 150
   courses_col <- character(LARGE)
   students_col <- character(LARGE)
