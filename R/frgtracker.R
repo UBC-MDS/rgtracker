@@ -50,7 +50,7 @@ mds_assess <- c("lab1",
 #' @return None
 #' @export
 #'
-#' @example
+#' @examples
 #' course_df <- data.frame(
 #' course_id = c(rep(511, 6)),
 #' assessment_id = c("lab1","lab2","lab3","lab4","quiz1","quiz2"),
@@ -107,7 +107,7 @@ register_courses <- function(df){
 #' @return None
 #' @export
 #'
-#' @example
+#' @examples
 #' grade_df <- data.frame(course_id=rep(511, 6),
 #' student_id=rep("Kiki", 6),
 #' assessment_id = c('lab1', 'lab2', 'lab3', 'lab4', 'quiz1', 'quiz2'),
