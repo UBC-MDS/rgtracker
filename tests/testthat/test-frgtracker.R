@@ -148,9 +148,91 @@ test_that("The output of rank_courses is not valid", {
 
 #tests for rank_courses end
 
-#function5 start
+# tests for rank_students start
 
-#function5 end
+generate_fake_dataframe <- function() {
+  df <- data.frame(
+    course_id = c(rep("511", 4), rep("522", 4)),
+    student_id = c(
+      "tom", "tiff", "mike", "joel",
+      "tom", "tiff", "mike", "joel"
+    ),
+    grade = c(90, 70, 60, 50, 95, 91, 85, 80)
+  )
+  df
+}
+
+generate_fake_dataframe_outputs <- function(courseid, grade) {
+  df <- data.frame(
+    student_id = c("tom", "tiff", "mike", "joel"),
+    grade = grade,
+    rank = c(1, 2, 3, 4)
+  )
+  df
+}
+
+generate_fake_matrix <- function() {
+  matrix_ex <- matrix(
+    data = c(
+      c(rep("511", 4), rep("522", 4)),
+      c(
+        "tom", "tiff", "mike", "joel", "tom",
+        "tiff", "mike", "joel"
+      ),
+      c(
+        84.66, 88.34, 87.66, 90.82, 95.52,
+        87.92, 88.92, 92.80
+      )
+    ),
+    nrow = 8,
+    ncol = 3
+  )
+  matrix_ex
+}
+
+
+test_that("Incorrect input types should throw an error", {
+  temp_df <- generate_fake_dataframe()
+  expect_error(rank_students(df = generate_fake_matrix()))
+  expect_error(rank_students(df = temp_df, courseid = 512))
+  expect_error(rank_students(df = temp_df, n = "3"))
+  expect_error(rank_students(df = temp_df, n = -3))
+  expect_error(rank_students(df = temp_df, n = 3.5))
+  expect_error(nrow(rank_students(df = temp_df, courseid = "511", n = 5)))
+  expect_error(rank_students(df = temp_df, ascending = "TRUE"))
+})
+
+test_that("Dataframe should be equal", {
+  temp_df <- generate_fake_dataframe()
+  expect_equal(
+    rank_students(df = temp_df, courseid = "511"),
+    generate_fake_dataframe_outputs(courseid = "511",
+                                    c(90, 70, 60, 50))
+  )
+  expect_equal(
+    rank_students(df = temp_df, courseid = "522"),
+    generate_fake_dataframe_outputs(courseid = "522",
+                                    c(95, 91, 85, 80))
+  )
+  expect_equal(
+    rank_students(df = temp_df, courseid = "all"),
+    generate_fake_dataframe_outputs(courseid = "all",
+                                    c(92.5, 80.5, 72.5, 65))
+  )
+})
+
+test_that("Grade should be between 0 and 100", {
+  temp_df <- generate_fake_dataframe()
+  expect_false(any(temp_df$grade < 0))
+  expect_false(any(temp_df$grade > 100))
+})
+
+test_that("NAs should be dropped", {
+  temp_df <- generate_fake_dataframe()
+  expect_false(is.null(rank_students(df = temp_df)))
+})
+
+# tests for rank_students end
 
 # tests for suggest_grade_adjustment start
 
