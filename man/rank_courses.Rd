@@ -6,8 +6,8 @@
 specified method.}
 \usage{
 rank_courses(
-  method = c("method", "median", "lst-quantile", "3rd-quantile"),
-  descending = True
+  method = c("course_id", "mean", "1st-quantile", "median", "3rd-quantile"),
+  descending = TRUE
 )
 }
 \arguments{
@@ -25,5 +25,6 @@ Calculate students' course grades to rank courses in ascending/descending order 
 specified method.
 }
 \examples{
-
+rank_courses("mean")
+rank_courses("median", descending=FALSE)
 }
