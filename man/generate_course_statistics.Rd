@@ -4,9 +4,13 @@
 \alias{generate_course_statistics}
 \title{Calculate the summary statistics for specified courses including mean, median and quantiles.}
 \usage{
-generate_course_statistics(course_ids)
+generate_course_statistics(courses, grades, course_ids)
 }
 \arguments{
+\item{courses}{A dataframe containing component weights for each course}
+
+\item{grades}{A dataframe containing grades for students}
+
 \item{course_ids}{A list including all course IDs for which the summary statistics are
 calculated for.}
 }
@@ -17,6 +21,35 @@ A dataframe containing the summary statistics for specified courses
 Calculate the summary statistics for specified courses including mean, median and quantiles.
 }
 \examples{
-generate_course_statistics(course_ids = "511")
-generate_course_statistics(course_ids = c("511", "522"))
+grades <- data.frame(
+  course_id = c(511, 511, 511, 511, 522, 522, 522, 522),
+  student_id = c("tom", "tiff", "mike", "joel", "tom", "tiff", "mike", "joel"),
+  lab1 = c(100, 87.6, 84.4, 100, 0, 0, 0, 0),
+  lab2 = c(100, 100, 79.6, 100, 0, 0, 0, 0),
+  lab3 = c(79.2, 81.2, 75.2, 99.6, 0, 0, 0, 0),
+  lab4 = c(83.6, 89.2, 98.8, 71.2, 0, 0, 0, 0),
+  quiz1 = c(75.6, 100, 84.8, 96.8, 0, 0, 0, 0),
+  quiz2 = c(75.6, 73.2, 100, 79.2, 0, 0, 0, 0),
+  milestone1 = c(0, 0, 0, 0, 100, 100, 92, 98.4),
+  milestone2 = c(0, 0, 0, 0, 97.6, 77.2, 75.6, 85.6),
+  milestone3 = c(0, 0, 0, 0, 80, 76.8, 97.6, 96.8),
+  milestone4 = c(0, 0, 0, 0, 100, 100, 84.4, 100),
+  feedback = c(0, 0, 0, 0, 100, 85.6, 98.8, 82.4)
+)
+courses <- data.frame(
+  course_id = c(511, 522),
+  lab1 = c(0.15, 0),
+  lab2 = c(0.15, 0),
+  lab3 = c(0.15, 0),
+  lab4 = c(0.15, 0),
+  quiz1 = c(0.2, 0),
+  quiz2 = c(0.2, 0),
+  milestone1 = c(0, 0.1),
+  milestone2 = c(0, 0.2),
+  milestone3 = c(0, 0.2),
+  milestone4 = c(0, 0.3),
+  feedback = c(0, 0.2)
+)
+generate_course_statistics(courses, grades, course_ids = "511")
+generate_course_statistics(courses, grades, course_ids = c("511", "522"))
 }
