@@ -102,9 +102,9 @@ generate_course_statistics <- function(courses, grades, course_ids) {
       dplyr::filter(.data$course_id == course_ids[i])
     statistics[i,] <- c(course_ids[i],
                     mean(temp_df$grade),
-                    quantile(temp_df$grade, 0.25),
-                    median(temp_df$grade),
-                    quantile(temp_df$grade, 0.75))
+                    stats::quantile(temp_df$grade, 0.25),
+                    stats::median(temp_df$grade),
+                    stats::quantile(temp_df$grade, 0.75))
   }
 
   statistics
@@ -471,10 +471,7 @@ calculate_final_grade <- function(courses, grades, course_ids)
     stop("course_ids must be a vector")
   }
 
-  # As R discourages adding element to vector / list, we initialize these vectors
-  # with large number of elements, and keep track how many elements added to
-  # these vectors
-  # 25 courses & 150 students
+
   LARGE <- 25 * 150
   courses_col <- character(LARGE)
   students_col <- character(LARGE)

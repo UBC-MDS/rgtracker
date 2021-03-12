@@ -73,15 +73,15 @@ test_that("The output of generate_course_statistics is incorrect", {
   expect_equal(output, expected_output)
 
   output<- as.numeric(stats[2,4])
-  expected_output <- median(grade_522)
+  expected_output <- stats::median(grade_522)
   expect_equal(output, expected_output)
 
   output <- as.numeric(stats[1,3])
-  expected_output <- as.numeric(quantile(grade_511, 0.25))
+  expected_output <- as.numeric(stats::quantile(grade_511, 0.25))
   expect_equal(output, expected_output)
 
   output <- as.numeric(stats[2,5])
-  expected_output <- as.numeric(quantile(grade_522, 0.75))
+  expected_output <- as.numeric(stats::quantile(grade_522, 0.75))
   expect_equal(output, expected_output)
 })
 
