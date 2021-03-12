@@ -59,15 +59,15 @@ mds_assess <- c("lab1",
 #' register_courses(course_df)
 register_courses <- function(df){
 
-  if (sum(df$course_id %in% mds_courses) != nrow(df)) {
+  if (!all(df$course_id %in% mds_courses)) {
     stop("I only work on MDS courses! You have at least one is not.")
   }
 
-  if (sum(df$assessment_id %in% mds_assess) != nrow(df)){
+  if (!all(df$assessment_id %in% mds_assess)) {
     stop("I only work on MDS assessments! You have at least one is not.")
   }
 
-  if (sum(df$weight >= 0) != nrow(df)){
+  if (!all(df$weight >= 0)) {
     stop("You have at least one assessment weight is negative!")
   }
 
@@ -75,7 +75,7 @@ register_courses <- function(df){
     dplyr::group_by(.data$course_id) %>%
     dplyr::summarise(w_sum = sum(.data$weight))
 
-  if (sum(w_sum_df$w_sum) != nrow(w_sum_df)) {
+  if (!all(w_sum_df$w_sum == 1)) {
     stop("The sum of all assessment weights should be 1 for individual
          courses!")
   }
@@ -88,8 +88,8 @@ register_courses <- function(df){
                 values_fill = 0)
   df$course_id <- as.character(df$course_id)
   df <- as.data.frame(df)
-  df
 
+  df
 }
 
 # register_courses end
@@ -116,15 +116,15 @@ register_courses <- function(df){
 #' record_grades(grade_df)
 record_grades <- function(df){
 
-  if (sum(df$course_id %in% mds_courses) != nrow(df)) {
+  if (!all(df$course_id %in% mds_courses)) {
     stop("I only work on MDS courses! You have at least one is not.")
   }
 
-  if (sum(df$assessment_id %in% mds_assess) != nrow(df)){
+  if (!all(df$assessment_id %in% mds_assess)) {
     stop("I only work on MDS assessments! You have at least one is not.")
   }
 
-  if(sum(df$grade < 0) > 0 | sum(df$grade > 100) > 0){
+  if(any(df$grade < 0) | any(df$grade > 100)){
     stop("The grade range should be between 0 and 100!")
   }
 
@@ -135,6 +135,7 @@ record_grades <- function(df){
                 values_fill = 0)
   df$course_id <- as.character(df$course_id)
   df <- as.data.frame(df)
+
   df
 }
 
