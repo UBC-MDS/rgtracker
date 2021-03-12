@@ -6,11 +6,17 @@
 specified method.}
 \usage{
 rank_courses(
-  method = c("course_id", "mean", "1st-quantile", "median", "3rd-quantile"),
+  courses,
+  grades,
+  method = c("mean", "1st-quantile", "median", "3rd-quantile"),
   descending = TRUE
 )
 }
 \arguments{
+\item{courses}{A dataframe containing component weights for each course}
+
+\item{grades}{A dataframe containing grades for students}
+
 \item{method}{one of "method", "median", "lst-quantile", "3rd-quantile", defining
 the method for calculating the course rankings.}
 
@@ -25,6 +31,17 @@ Calculate students' course grades to rank courses in ascending/descending order 
 specified method.
 }
 \examples{
-rank_courses("mean")
-rank_courses("median", descending=FALSE)
+grades <- data.frame(
+course_id = c("511"),
+student_id = c("tom"),
+lab1 = c(100),
+lab2 = c(80)
+)
+courses <- data.frame(
+course_id = c("511"),
+lab1 = c(0.45),
+lab2 = c(0.55)
+)
+rank_courses(courses, grades, "mean")
+rank_courses(courses, grades, "median", descending=FALSE)
 }

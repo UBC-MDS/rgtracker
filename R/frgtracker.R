@@ -52,10 +52,21 @@ record_grades <- function(df){
 #' @export
 #'
 #' @examples
-#' generate_course_statistics(course_ids = "511")
-#' generate_course_statistics(course_ids = c("511", "522"))
+#' grades <- data.frame(
+#' course_id = c("511"),
+#' student_id = c("tom"),
+#' lab1 = c(100),
+#' lab2 = c(80)
+#' )
+#' courses <- data.frame(
+#' course_id = c("511"),
+#' lab1 = c(0.45),
+#' lab2 = c(0.55)
+#' )
+#' generate_course_statistics(courses, grades, course_ids = "511")
+#' generate_course_statistics(courses, grades, course_ids = c("511", "522"))
 
-generate_course_statistics <- function(course_ids) {
+generate_course_statistics <- function(courses, grades, course_ids) {
   if (!is.character(course_ids)){
     stop("course_ids must be a vector including characters")
   }
@@ -75,7 +86,7 @@ generate_course_statistics <- function(course_ids) {
                     median(temp_df$grade),
                     quantile(temp_df$grade, 0.75))
   }
-  
+
   statistics
 }
 
@@ -86,6 +97,8 @@ generate_course_statistics <- function(course_ids) {
 #' Calculate students' course grades to rank courses in ascending/descending order by a
 #' specified method.
 #'
+#' @param courses A dataframe containing component weights for each course
+#' @param grades A dataframe containing grades for students
 #' @param method one of "method", "median", "lst-quantile", "3rd-quantile", defining
 #' the method for calculating the course rankings.
 #' @param descending A logical value to decide if the rank should be in descending or
@@ -95,10 +108,25 @@ generate_course_statistics <- function(course_ids) {
 #' @export
 #'
 #' @examples
-#' rank_courses("mean")
-#' rank_courses("median", descending=FALSE)
+#' grades <- data.frame(
+#' course_id = c("511"),
+#' student_id = c("tom"),
+#' lab1 = c(100),
+#' lab2 = c(80)
+#' )
+#' courses <- data.frame(
+#' course_id = c("511"),
+#' lab1 = c(0.45),
+#' lab2 = c(0.55)
+#' )
+#' rank_courses(courses, grades, "mean")
+#' rank_courses(courses, grades, "median", descending=FALSE)
 
-rank_courses <- function(method=c("course_id", "mean", "1st-quantile", "median", "3rd-quantile"), descending=TRUE) {
+rank_courses <- function(
+  courses, grades,
+  method=c("mean", "1st-quantile", "median", "3rd-quantile"),
+  descending=TRUE)
+  {
   valid = c("mean", "median", "lst-quantile", "3rd-quantile")
   if (length(subset(valid, valid == method))==0){
     stop("method only accepts 'mean', '1st-quantile', 'median' or '3rd-quantile'")
@@ -109,7 +137,7 @@ rank_courses <- function(method=c("course_id", "mean", "1st-quantile", "median",
 
   course_list = as.character(courses$course_id)
 
-  course_rank <- generate_course_statistics(course_list) %>%
+  course_rank <- generate_course_statistics(courses, grades, course_list) %>%
     dplyr::select(c("course_id", as.character(method)))
   colnames(course_rank) <- c("course_id", "grade")
   course_rank <- course_rank[order(course_rank$grade, decreasing = descending),]

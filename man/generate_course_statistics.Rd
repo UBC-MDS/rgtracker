@@ -4,7 +4,7 @@
 \alias{generate_course_statistics}
 \title{Calculate the summary statistics for specified courses including mean, median and quantiles.}
 \usage{
-generate_course_statistics(course_ids)
+generate_course_statistics(courses, grades, course_ids)
 }
 \arguments{
 \item{course_ids}{A list including all course IDs for which the summary statistics are
@@ -17,6 +17,17 @@ A dataframe containing the summary statistics for specified courses
 Calculate the summary statistics for specified courses including mean, median and quantiles.
 }
 \examples{
+grades <- data.frame(
+course_id = c("511"),
+student_id = c("tom"),
+lab1 = c(100),
+lab2 = c(80)
+)
+courses <- data.frame(
+course_id = c("511"),
+lab1 = c(0.45),
+lab2 = c(0.55)
+)
 generate_course_statistics(course_ids = "511")
 generate_course_statistics(course_ids = c("511", "522"))
 }
