@@ -1,35 +1,3 @@
-
-grades <- data.frame(
-  course_id = c(511, 511, 511, 511, 522, 522, 522, 522),
-  student_id = c("tom", "tiff", "mike", "joel", "tom", "tiff", "mike", "joel"),
-  lab1 = c(100, 87.6, 84.4, 100, 0, 0, 0, 0),
-  lab2 = c(100, 100, 79.6, 100, 0, 0, 0, 0),
-  lab3 = c(79.2, 81.2, 75.2, 99.6, 0, 0, 0, 0),
-  lab4 = c(83.6, 89.2, 98.8, 71.2, 0, 0, 0, 0),
-  quiz1 = c(75.6, 100, 84.8, 96.8, 0, 0, 0, 0),
-  quiz2 = c(75.6, 73.2, 100, 79.2, 0, 0, 0, 0),
-  milestone1 = c(0, 0, 0, 0, 100, 100, 92, 98.4),
-  milestone2 = c(0, 0, 0, 0, 97.6, 77.2, 75.6, 85.6),
-  milestone3 = c(0, 0, 0, 0, 80, 76.8, 97.6, 96.8),
-  milestone4 = c(0, 0, 0, 0, 100, 100, 84.4, 100),
-  feedback = c(0, 0, 0, 0, 100, 85.6, 98.8, 82.4)
-)
-courses <- data.frame(
-  course_id = c(511, 522),
-  lab1 = c(0.15, 0),
-  lab2 = c(0.15, 0),
-  lab3 = c(0.15, 0),
-  lab4 = c(0.15, 0),
-  quiz1 = c(0.2, 0),
-  quiz2 = c(0.2, 0),
-  milestone1 = c(0, 0.1),
-  milestone2 = c(0, 0.2),
-  milestone3 = c(0, 0.2),
-  milestone4 = c(0, 0.3),
-  feedback = c(0, 0.2)
-)
-
-
 # register_courses start
 
 #'Read and store the input data frame into a data frame of courses to be registered.
@@ -107,6 +75,10 @@ generate_course_statistics <- function(course_ids) {
                     median(temp_df$grade),
                     quantile(temp_df$grade, 0.75))
   }
+<<<<<<< HEAD
+=======
+  
+>>>>>>> 5d7c1b8fed1bec04efc39880d82b00244af0fab1
   statistics
 }
 
@@ -187,8 +159,9 @@ rank_students <- function(course_id = "all", n = 3, ascending = FALSE) {
 #' the course is still below the course benchmark, we will continue to adjust
 #' upwards each lab / quiz until this benchmark is reached.
 #'
-#'
-#' @param course_id A string representing the course ID for which grades should
+#' @param courses A dataframe containing component weights for each course
+#' @param grades A dataframe containing grades for students
+#' @param id A string representing the course ID for which grades should
 #' be adjusted.
 #' @param benchmark_course A double value representing the benchmark of which
 #' the average grade for the whole course must meet or exceed. Defaults to 90.
@@ -200,13 +173,135 @@ rank_students <- function(course_id = "all", n = 3, ascending = FALSE) {
 #' @return A dataframe containing adjusted grades for all students in a course.
 #' @export
 #'
+#' @importFrom magrittr %>%
+#' @importFrom rlang .data
+#'
 #' @examples
-#' suggest_grade_adjustment(course_id = "511")
-#' suggest_grade_adjustment(course_id = "511", benchmark_course = 98)
-suggest_grade_adjustment <- function(course_id, benchmark_course = 90,
-                                     benchmark_lab = 85, benchmark_quiz = 85)
+#' grades <- data.frame(
+#' course_id = c("511"),
+#' student_id = c("tom"),
+#' lab1 = c(100),
+#' lab2 = c(80)
+#' )
+#' courses <- data.frame(
+#' course_id = c("511"),
+#' lab1 = c(0.45),
+#' lab2 = c(0.55)
+#' )
+#' suggest_grade_adjustment(courses, grades, id = "511")
+suggest_grade_adjustment <- function(courses, grades, id,
+                                     benchmark_course = 90, benchmark_lab = 85,
+                                     benchmark_quiz = 85)
   {
+  if(!is.data.frame(courses)){
+    stop("courses must be a dataframe")
+  }
 
+  if(!is.data.frame(grades)){
+    stop("grades must be a dataframe")
+  }
+
+  if(!is.character(id)){
+    stop("course_id must be a vector")
+  }
+
+  if (!is.numeric(benchmark_course) || benchmark_course < 0 ||
+      benchmark_course > 100) {
+    stop("benchmark_course must be a number between 0 and 100 (inclusive")
+  }
+
+  if (!is.numeric(benchmark_lab) || benchmark_lab < 0 || benchmark_lab > 100) {
+    stop("benchmark_lab must be a number between 0 and 100 (inclusive")
+  }
+
+  if (!is.numeric(benchmark_quiz) || benchmark_quiz < 0 ||
+      benchmark_quiz > 100) {
+    stop("benchmark_quiz must be a number between 0 and 100 (inclusive")
+  }
+
+  # filter course component and grades for this course only
+  courses <- courses %>%
+    dplyr::filter(.data$course_id == id)
+
+  grades <- grades %>%
+    dplyr::filter(.data$course_id == id)
+
+  components <- courses %>%
+    tidyr::pivot_longer(
+      !.data$course_id,
+      names_to = "component",
+      "values_to" = "weight") %>%
+    dplyr::filter(.data$weight > 0) %>%
+    dplyr::pull(.data$component)
+
+  # adjust quizzes and labs
+  for (i in 1:length(components)) {
+    component <- components[i]
+
+    benchmark <- benchmark_lab
+    if (startsWith(component, "quiz")) {
+      benchmark <- benchmark_quiz
+    }
+
+    component_grades <- grades %>%
+      dplyr::pull(get(component))
+
+    avg_component <- component_grades %>%
+      mean()
+
+    while (avg_component < benchmark) {
+      component_grades <- component_grades %>%
+        sapply(function(x) min(x + 1L, 100L))
+
+      avg_component <- component_grades %>%
+        mean()
+    }
+    grades[component] <- component_grades
+  }
+
+  # adjust course
+  for (i in 1:length(components)) {
+    component <- components[i]
+
+    avg_course <- calculate_final_grade(courses, grades, id) %>%
+      dplyr::pull(.data$grade) %>%
+      mean()
+
+    if (avg_course >= benchmark_course) {
+      break
+    }
+
+    component_grades <- grades %>%
+      dplyr::pull(get(component))
+
+    avg_component <- component_grades %>%
+      mean()
+
+    component_weight <- courses %>%
+      dplyr::pull(get(component))
+
+    diff <- (100 - avg_component) * component_weight
+
+    if (avg_course + diff < benchmark_course) {
+      # let everyone have 100 marks
+      grades[component] <- rep(100, n=length(component_grades))
+    } else {
+      # increase gradually until it meets the benchmark
+      while (TRUE) {
+        component_grades <- component_grades %>%
+          sapply(function(x) min(x + 1L, 100L))
+
+        diff <- (mean(component_grades) - avg_component) * component_weight
+
+        if (avg_course + diff >= benchmark_course) {
+          grades[component] <- component_grades
+          break
+        }
+      }
+    }
+  }
+
+  grades
 }
 
 # end Suggest Grade Adjustment
@@ -283,7 +378,12 @@ calculate_final_grade <- function(courses, grades, course_ids)
     course_grades <- course_grades %>%
       dplyr::select(-.data$student_id)
 
-    temp <- data.frame(mapply(`*`,course_grades, weights[1,])) %>% rowSums()
+    if (nrow(course_grades) > 1) {
+      temp <- data.frame(mapply(`*`,course_grades, weights[1,])) %>% rowSums()
+    } else {
+      temp <- data.frame(mapply(`*`,course_grades, weights[1,])) %>% sum()
+    }
+
     num_elements <- course_grades %>%
       nrow()
 
