@@ -152,9 +152,31 @@ record_grades <- function(df){
 #' @export
 #'
 #' @examples
+#' generate_course_statistics(course_ids = "511")
+#' generate_course_statistics(course_ids = c("511", "522"))
 
 generate_course_statistics <- function(course_ids) {
-  print("NULL")
+  if (!is.character(course_ids)){
+    stop("course_ids must be a vector including characters")
+  }
+  if (length(subset(courses$course_id, courses$course_id == course_ids))==0) {
+    stop("The course is currently not a part of the courses list")
+  }
+
+  final_grade <- calculate_final_grade(courses, grades, course_ids)
+  statistics <- data.frame(matrix(ncol=5, nrow=0))
+  colnames(statistics) <- c("course_id", "mean", "1st-quantile", "median", "3rd-quantile")
+  for (i in 1:length(course_ids)){
+    temp_df <- final_grade %>%
+      dplyr::filter(.data$course_id == course_ids[i])
+    statistics[i,] <- c(course_ids[i],
+                    mean(temp_df$grade),
+                    quantile(temp_df$grade, 0.25),
+                    median(temp_df$grade),
+                    quantile(temp_df$grade, 0.75))
+  }
+  
+  statistics
 }
 
 # function3 end
@@ -173,9 +195,26 @@ generate_course_statistics <- function(course_ids) {
 #' @export
 #'
 #' @examples
+#' rank_courses("mean")
+#' rank_courses("median", descending=FALSE)
 
-rank_courses <- function(method= c("method", "median", "lst-quantile", "3rd-quantile"), descending=True) {
-  print("NULL")
+rank_courses <- function(method=c("course_id", "mean", "1st-quantile", "median", "3rd-quantile"), descending=TRUE) {
+  valid = c("mean", "median", "lst-quantile", "3rd-quantile")
+  if (length(subset(valid, valid == method))==0){
+    stop("method only accepts 'mean', '1st-quantile', 'median' or '3rd-quantile'")
+  }
+  if (!is.logical(descending)){
+    stop("descending must be logical value")
+  }
+
+  course_list = as.character(courses$course_id)
+
+  course_rank <- generate_course_statistics(course_list) %>%
+    dplyr::select(c("course_id", as.character(method)))
+  colnames(course_rank) <- c("course_id", "grade")
+  course_rank <- course_rank[order(course_rank$grade, decreasing = descending),]
+
+  course_rank
 }
 
 # function4 end

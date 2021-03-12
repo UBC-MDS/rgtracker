@@ -148,13 +148,84 @@ test_that("The output of the grades data frame is incorrect!", {
 
 #tests for record_grades function end
 
-#function3 start
+#tests for generate_course_statistics start
+test_that("The input of generate_course_statistics is not valid", {
+  course_ids <- c("530", "540")
+  expect_error(generate_course_statistics(course_ids))
 
-#function3 end
+  course_ids <- c(511)
+  expect_error(generate_course_statistics(course_ids))
+})
 
-#function4 start
+test_that("The output of generate_course_statistics is incorrect", {
+  course_ids <- c("511", "522")
+  grade_511 <- c(84.66, 88.34, 87.66, 90.82)
+  grade_522 <- c(95.52, 87.92, 88.92, 92.80)
 
-#function4 end
+  stats <- generate_course_statistics(course_ids)
+  output <- as.numeric(stats[1,2])
+  expected_output <- mean(grade_511)
+  expect_equal(output, expected_output)
+
+  output<- as.numeric(stats[2,4])
+  expected_output <- median(grade_522)
+  expect_equal(output, expected_output)
+
+  output <- as.numeric(stats[1,3])
+  expected_output <- as.numeric(quantile(grade_511, 0.25))
+  expect_equal(output, expected_output)
+
+  output <- as.numeric(stats[2,5])
+  expected_output <- as.numeric(quantile(grade_522, 0.75))
+  expect_equal(output, expected_output)
+})
+
+
+test_that("The output of generate_course_statistics is not valid", {
+  course_ids <- c("511", "522")
+  output <- generate_course_statistics(course_ids)
+  expect_true(is.data.frame(output))
+  expect_equal(colnames(output), c("course_id", "mean", "1st-quantile", "median", "3rd-quantile"))
+  expect_equal(nrow(output), 2)
+})
+
+#tests for generate_course_statistics end
+
+#tests for rank_courses start
+
+test_that("The input of rank_courses is not valid", {
+  expect_error(rank_courses(method="avg", descending=TRUE))
+  expect_error(rank_courses(method="mean", descending="TRUE"))
+})
+
+test_that("The output of rank_courses is incorrect", {
+  grade_511 <- c(84.66, 88.34, 87.66, 90.82)
+  grade_522 <- c(95.52, 87.92, 88.92, 92.80)
+
+  output <- as.numeric(rank_courses(method="mean")[2,2])
+  expected_output <- mean(grade_511)
+  expect_equal(output, expected_output)
+
+  output<- as.numeric(rank_courses(method="median")[1,2])
+  expected_output <- median(grade_522)
+  expect_equal(output, expected_output)
+
+  output <- as.numeric(rank_courses(method="mean", descending=FALSE)[2,2])
+  expected_output <- mean(grade_522)
+  expect_equal(output, expected_output)
+
+  output<- as.numeric(rank_courses(method="median", descending=FALSE)[1,2])
+  expected_output <- median(grade_511)
+  expect_equal(output, expected_output)
+})
+
+test_that("The output of rank_courses is not valid", {
+  output <- rank_courses(method="mean")
+  expect_true(is.data.frame(output))
+  expect_equal(colnames(output), c("course_id", "grade"))
+})
+
+#tests for rank_courses end
 
 #function5 start
 
