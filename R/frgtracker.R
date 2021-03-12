@@ -1,5 +1,3 @@
-
-# library(tidyverse)
 mds_courses <- c(511,
                  512,
                  513,
@@ -53,7 +51,12 @@ mds_assess <- c("lab1",
 #' @export
 #'
 #' @example
-#'register_courses(course_df)
+#' course_df <- data.frame(
+#' course_id = c(rep(511, 6)),
+#' assessment_id = c("lab1","lab2","lab3","lab4","quiz1","quiz2"),
+#' weight = c(rep(.15, 4), rep(.2, 2)))
+#'
+#' register_courses(course_df)
 register_courses <- function(df){
 
   if (sum(df$course_id %in% mds_courses) != nrow(df)) {
@@ -69,8 +72,8 @@ register_courses <- function(df){
   }
 
   w_sum_df <- df %>%
-    group_by(course_id) %>%
-    summarise(w_sum = sum(weight))
+    dplyr::group_by(.data$course_id) %>%
+    dplyr::summarise(w_sum = sum(.data$weight))
 
   if (sum(w_sum_df$w_sum) != nrow(w_sum_df)) {
     stop("The sum of all assessment weights should be 1 for individual
@@ -80,7 +83,8 @@ register_courses <- function(df){
 
 
   df <- df %>%
-    pivot_wider(names_from = assessment_id, values_from = weight,
+    tidyr::pivot_wider(names_from = .data$assessment_id,
+                       values_from = .data$weight,
                 values_fill = 0)
   df$course_id <- as.character(df$course_id)
   df <- as.data.frame(df)
@@ -104,7 +108,12 @@ register_courses <- function(df){
 #' @export
 #'
 #' @example
-#'record_grades(grade_df)
+#' grade_df <- data.frame(course_id=rep(511, 6),
+#' student_id=rep("Kiki", 6),
+#' assessment_id = c('lab1', 'lab2', 'lab3', 'lab4', 'quiz1', 'quiz2'),
+#' grade=c(rep(92.1, 3), rep(80.2, 3)))
+#'
+#' record_grades(grade_df)
 record_grades <- function(df){
 
   if (sum(df$course_id %in% mds_courses) != nrow(df)) {
@@ -121,7 +130,8 @@ record_grades <- function(df){
 
 
   df <- df %>%
-    pivot_wider(names_from = assessment_id, values_from = grade,
+    tidyr::pivot_wider(names_from = .data$assessment_id,
+                       values_from = .data$grade,
                 values_fill = 0)
   df$course_id <- as.character(df$course_id)
   df <- as.data.frame(df)
@@ -328,3 +338,4 @@ calculate_final_grade <- function(courses, grades, course_ids)
 }
 
 # end Calculate Final Grade
+
