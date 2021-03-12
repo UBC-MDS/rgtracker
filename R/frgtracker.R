@@ -102,9 +102,9 @@ generate_course_statistics <- function(courses, grades, course_ids) {
       dplyr::filter(.data$course_id == course_ids[i])
     statistics[i,] <- c(course_ids[i],
                     mean(temp_df$grade),
-                    quantile(temp_df$grade, 0.25),
-                    median(temp_df$grade),
-                    quantile(temp_df$grade, 0.75))
+                    stats::quantile(temp_df$grade, 0.25),
+                    stats::median(temp_df$grade),
+                    stats::quantile(temp_df$grade, 0.75))
   }
 
   statistics
