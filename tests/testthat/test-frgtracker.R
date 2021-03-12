@@ -162,7 +162,7 @@ generate_fake_dataframe <- function() {
   df
 }
 
-generate_fake_dataframe_outputs <- function(courseid, grade) {
+generate_fake_dataframe_outputs <- function(grade) {
   df <- data.frame(
     student_id = c("tom", "tiff", "mike", "joel"),
     grade = grade,
@@ -206,18 +206,15 @@ test_that("Dataframe should be equal", {
   temp_df <- generate_fake_dataframe()
   expect_equal(
     rank_students(df = temp_df, courseid = "511"),
-    generate_fake_dataframe_outputs(courseid = "511",
-                                    c(90, 70, 60, 50))
+    generate_fake_dataframe_outputs(c(90, 70, 60, 50))
   )
   expect_equal(
     rank_students(df = temp_df, courseid = "522"),
-    generate_fake_dataframe_outputs(courseid = "522",
-                                    c(95, 91, 85, 80))
+    generate_fake_dataframe_outputs(c(95, 91, 85, 80))
   )
   expect_equal(
     rank_students(df = temp_df, courseid = "all"),
-    generate_fake_dataframe_outputs(courseid = "all",
-                                    c(92.5, 80.5, 72.5, 65))
+    generate_fake_dataframe_outputs(c(92.5, 80.5, 72.5, 65))
   )
 })
 
