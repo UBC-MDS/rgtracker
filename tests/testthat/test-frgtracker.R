@@ -1,3 +1,40 @@
+generate_input_courses_df <- function() {
+  courses <- data.frame(
+    course_id = c(rep(511, 6), rep(522, 5)),
+    assessment_id = c(
+      "lab1",
+      "lab2",
+      "lab3",
+      "lab4",
+      "quiz1",
+      "quiz2",
+      "milestone1",
+      "milestone2",
+      "milestone3",
+      "milestone4",
+      "feedback"
+    ),
+    weight = c(rep(.15, 4), rep(.2, 2), .1, .2, .2, .3, .2))
+
+  courses
+}
+
+generate_input_grades_df <- function(course_id=c(rep(511, 6)),
+                                     student_id = c(rep('james', 6)),
+                                     assessment_id=c("lab1", "lab2", "lab3",
+                                                     "lab4", "quiz1", "quiz2"),
+                                     grade = c(rep(88, 4), rep(93.2, 2))) {
+
+  grades <- data.frame(
+    course_id = course_id,
+    student_id = student_id,
+    assessment_id = assessment_id,
+    grade = grade
+  )
+
+  grades
+}
+
 generate_courses_calculate_final_grade <- function() {
   courses <- data.frame(
     course_id = c(511, 522),
