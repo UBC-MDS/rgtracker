@@ -17,6 +17,28 @@ generate_courses_calculate_final_grade <- function() {
   courses
 }
 
+generate_grades_calculate_final_grade <- function() {
+  grades <- data.frame(
+    course_id = c(511, 511, 511, 511, 522, 522, 522, 522),
+    student_id = c("tom", "tiff", "mike", "joel", "tom", "tiff", "mike", "joel"),
+    lab1 = c(100, 87.6, 84.4, 100, 0, 0, 0, 0),
+    lab2 = c(100, 100, 79.6, 100, 0, 0, 0, 0),
+    lab3 = c(79.2, 81.2, 75.2, 99.6, 0, 0, 0, 0),
+    lab4 = c(83.6, 89.2, 98.8, 71.2, 0, 0, 0, 0),
+    quiz1 = c(75.6, 100, 84.8, 96.8, 0, 0, 0, 0),
+    quiz2 = c(75.6, 73.2, 100, 79.2, 0, 0, 0, 0),
+    milestone1 = c(0, 0, 0, 0, 100, 100, 92, 98.4),
+    milestone2 = c(0, 0, 0, 0, 97.6, 77.2, 75.6, 85.6),
+    milestone3 = c(0, 0, 0, 0, 80, 76.8, 97.6, 96.8),
+    milestone4 = c(0, 0, 0, 0, 100, 100, 84.4, 100),
+    feedback = c(0, 0, 0, 0, 100, 85.6, 98.8, 82.4)
+  )
+
+  grades
+}
+
+# tests for register_courses function start
+
 test_that("At least one of you course id is not MDS-courses as far as I know!",{
 
   c_df <- generate_input_courses_df()
@@ -87,31 +109,9 @@ test_that("Oops I only deal with grade records out of 100!", {
 
   expect_error(record_grades(df))
   expect_error(record_grades(df1))
-generate_grades_calculate_final_grade <- function() {
-  grades <- data.frame(
-    course_id = c(511, 511, 511, 511, 522, 522, 522, 522),
-    student_id = c("tom", "tiff", "mike", "joel", "tom", "tiff", "mike", "joel"),
-    lab1 = c(100, 87.6, 84.4, 100, 0, 0, 0, 0),
-    lab2 = c(100, 100, 79.6, 100, 0, 0, 0, 0),
-    lab3 = c(79.2, 81.2, 75.2, 99.6, 0, 0, 0, 0),
-    lab4 = c(83.6, 89.2, 98.8, 71.2, 0, 0, 0, 0),
-    quiz1 = c(75.6, 100, 84.8, 96.8, 0, 0, 0, 0),
-    quiz2 = c(75.6, 73.2, 100, 79.2, 0, 0, 0, 0),
-    milestone1 = c(0, 0, 0, 0, 100, 100, 92, 98.4),
-    milestone2 = c(0, 0, 0, 0, 97.6, 77.2, 75.6, 85.6),
-    milestone3 = c(0, 0, 0, 0, 80, 76.8, 97.6, 96.8),
-    milestone4 = c(0, 0, 0, 0, 100, 100, 84.4, 100),
-    feedback = c(0, 0, 0, 0, 100, 85.6, 98.8, 82.4)
-  )
 
-  grades
-}
-
-#function1 start
-#remove when actual tests are added
-test_that("multiplication works", {
-  expect_equal(2 * 2, 4)
 })
+
 
 test_that("The output of the grades data frame is incorrect!", {
 
