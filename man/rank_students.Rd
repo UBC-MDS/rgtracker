@@ -4,10 +4,12 @@
 \alias{rank_students}
 \title{Ranks students by their grade for a course or the program.}
 \usage{
-rank_students(course_id = "all", n = 3, ascending = FALSE)
+rank_students(df, courseid = "all", n = 4, ascending = FALSE)
 }
 \arguments{
-\item{course_id}{A string representing the course ID for which the ranking
+\item{df}{A dataframe containing the final grades for each student per course.}
+
+\item{courseid}{A string representing the course ID for which the ranking
 should be calculated for. Defaults to "all" for all courses completed thus far.}
 
 \item{n}{An integer value that represents the number of students for which the
@@ -18,13 +20,19 @@ of students is required. Defaults to FALSE.}
 }
 \value{
 A dataframe containing the rank of the students for the course or
-the program
+for all the program completed thus far.
 }
 \description{
-Calculate the average grade for a specified number of students and ranks them for a specific
-course or for the whole program completed thus far.
+Calculate the average grade for a specified number of students and ranks
+them for a specific course or for the whole program completed thus far.
 }
 \examples{
-rank_students()
-rank_students(course_id = "511", n = 3, ascending = TRUE)
+df <- data.frame(
+  course_id = c(rep("511", 4)),
+  student_id = c("tom", "tiff", "mike", "joel"),
+  grade = c(90, 80, 70, 67)
+)
+
+rank_students(df = df)
+rank_students(df = df, courseid = "511", n = 3, ascending = TRUE)
 }
