@@ -1,3 +1,40 @@
+generate_input_courses_df <- function() {
+  courses <- data.frame(
+    course_id = c(rep(511, 6), rep(522, 5)),
+    assessment_id = c(
+      "lab1",
+      "lab2",
+      "lab3",
+      "lab4",
+      "quiz1",
+      "quiz2",
+      "milestone1",
+      "milestone2",
+      "milestone3",
+      "milestone4",
+      "feedback"
+    ),
+    weight = c(rep(.15, 4), rep(.2, 2), .1, .2, .2, .3, .2))
+
+  courses
+}
+
+generate_input_grades_df <- function(course_id=c(rep(511, 6)),
+                                     student_id = c(rep('james', 6)),
+                                     assessment_id=c("lab1", "lab2", "lab3",
+                                                     "lab4", "quiz1", "quiz2"),
+                                     grade = c(rep(88, 4), rep(93.2, 2))) {
+
+  grades <- data.frame(
+    course_id = course_id,
+    student_id = student_id,
+    assessment_id = assessment_id,
+    grade = grade
+  )
+
+  grades
+}
+
 generate_courses_calculate_final_grade <- function() {
   courses <- data.frame(
     course_id = c(511, 522),
@@ -37,16 +74,99 @@ generate_grades_calculate_final_grade <- function() {
   grades
 }
 
-#function1 start
-#remove when actual tests are added
-test_that("multiplication works", {
-  expect_equal(2 * 2, 4)
+# tests for register_courses function start
+
+test_that("At least one of you course id is not MDS-courses as far as I know!",{
+
+  c_df <- generate_input_courses_df()
+  c_df$course_id[7] <- 577
+
+  g_df <- generate_input_grades_df()
+  g_df$course_id[6] <- 533
+
+  expect_error(register_courses(c_df))
+  expect_error(record_grades(g_df))
 })
-#function1 end
 
-#function2 start
 
-#function2 end
+test_that("At least one of your assessment id is not MDS-courses as far as I
+          know!",{
+  c_df <- generate_input_courses_df()
+  c_df$assessment_id[8] <- "lab5"
+
+  g_df <- generate_input_grades_df()
+  g_df$assessment_id[2] <- "quiz0"
+
+  expect_error(register_courses(c_df))
+  expect_error(record_grades(g_df))
+})
+
+test_that("The all weights for individual MDS-courses should add up to 1!",{
+  df <- generate_input_courses_df()
+  df$weight[10] <- .29
+
+  df1 <- generate_input_courses_df()
+  df1$weight[11] <- .21
+
+  expect_error(register_courses(df))
+  expect_error(register_courses(df1))
+})
+
+
+
+test_that("I saw you have at least one negative course weight, which should be
+          between 0 and 1 :)", {
+            df <- generate_input_courses_df()
+            df$weight[c(1, 2)] <- c(-.15, .45)
+
+            expect_error(register_courses(df))
+          })
+
+
+test_that("The output of the courses data frame is incorrect!", {
+
+  in_df <- generate_input_courses_df()
+  out_df <- generate_courses_calculate_final_grade()
+  out_df$course_id <- as.character(out_df$course_id)
+
+  expect_equal(register_courses(in_df),
+               out_df)
+})
+
+#tests for register_courses function end
+
+#tests for record_courses function start
+
+test_that("Oops I only deal with grade records out of 100!", {
+  df <- generate_input_grades_df()
+  df$grade[5] <- 100.1
+
+  df1 <- generate_input_grades_df()
+  df1$grade[2] <- -89.8
+
+  expect_error(record_grades(df))
+  expect_error(record_grades(df1))
+
+})
+
+
+test_that("The output of the grades data frame is incorrect!", {
+
+  in_df <- generate_input_grades_df()
+
+  out_df <- data.frame(course_id = "511",
+                       student_id = "james",
+                       lab1 = 88,
+                       lab2 = 88,
+                       lab3 = 88,
+                       lab4 = 88,
+                       quiz1 = 93.2,
+                       quiz2 = 93.2)
+
+  expect_equal(record_grades(in_df), out_df)
+})
+
+#tests for record_grades function end
 
 #tests for generate_course_statistics start
 test_that("The input of generate_course_statistics is not valid", {

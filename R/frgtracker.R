@@ -1,6 +1,44 @@
+mds_courses <- c(511,
+                 512,
+                 513,
+                 521,
+                 522,
+                 523,
+                 524,
+                 525,
+                 531,
+                 532,
+                 541,
+                 542,
+                 551,
+                 552,
+                 553,
+                 554,
+                 561,
+                 562,
+                 563,
+                 571,
+                 572,
+                 573,
+                 574,
+                 575,
+                 591)
+
+mds_assess <- c("lab1",
+                "lab2",
+                "lab3",
+                "lab4",
+                "milestone1",
+                "milestone2",
+                "milestone3",
+                "milestone4",
+                "feedback",
+                "quiz1",
+                "quiz2")
 # register_courses start
 
-#'Read and store the input data frame into a data frame of courses to be registered.
+#'Read and store the input data frame into a data frame of courses to be
+#'registered.
 #'
 #'For each of the course, the weights of all assessments should sum up to 1.
 #'The weights of individual assessment should be between 0 and 1.
@@ -12,10 +50,46 @@
 #' @return None
 #' @export
 #'
-#' @example
-#'register_courses(course_df)
+#' @examples
+#' course_df <- data.frame(
+#' course_id = c(rep(511, 6)),
+#' assessment_id = c("lab1","lab2","lab3","lab4","quiz1","quiz2"),
+#' weight = c(rep(.15, 4), rep(.2, 2)))
+#'
+#' register_courses(course_df)
 register_courses <- function(df){
 
+  if (!all(df$course_id %in% mds_courses)) {
+    stop("I only work on MDS courses! You have at least one is not.")
+  }
+
+  if (!all(df$assessment_id %in% mds_assess)) {
+    stop("I only work on MDS assessments! You have at least one is not.")
+  }
+
+  if (!all(df$weight >= 0)) {
+    stop("You have at least one assessment weight is negative!")
+  }
+
+  w_sum_df <- df %>%
+    dplyr::group_by(.data$course_id) %>%
+    dplyr::summarise(w_sum = sum(.data$weight))
+
+  if (!all(w_sum_df$w_sum == 1)) {
+    stop("The sum of all assessment weights should be 1 for individual
+         courses!")
+  }
+
+
+
+  df <- df %>%
+    tidyr::pivot_wider(names_from = .data$assessment_id,
+                       values_from = .data$weight,
+                values_fill = 0)
+  df$course_id <- as.character(df$course_id)
+  df <- as.data.frame(df)
+
+  df
 }
 
 # register_courses end
@@ -33,10 +107,36 @@ register_courses <- function(df){
 #' @return None
 #' @export
 #'
-#' @example
-#'record_grades(grade_df)
+#' @examples
+#' grade_df <- data.frame(course_id=rep(511, 6),
+#' student_id=rep("Kiki", 6),
+#' assessment_id = c('lab1', 'lab2', 'lab3', 'lab4', 'quiz1', 'quiz2'),
+#' grade=c(rep(92.1, 3), rep(80.2, 3)))
+#'
+#' record_grades(grade_df)
 record_grades <- function(df){
 
+  if (!all(df$course_id %in% mds_courses)) {
+    stop("I only work on MDS courses! You have at least one is not.")
+  }
+
+  if (!all(df$assessment_id %in% mds_assess)) {
+    stop("I only work on MDS assessments! You have at least one is not.")
+  }
+
+  if(any(df$grade < 0) | any(df$grade > 100)){
+    stop("The grade range should be between 0 and 100!")
+  }
+
+
+  df <- df %>%
+    tidyr::pivot_wider(names_from = .data$assessment_id,
+                       values_from = .data$grade,
+                values_fill = 0)
+  df$course_id <- as.character(df$course_id)
+  df <- as.data.frame(df)
+
+  df
 }
 
 # record_grades end
@@ -525,3 +625,4 @@ calculate_final_grade <- function(courses, grades, course_ids)
 }
 
 # end Calculate Final Grade
+

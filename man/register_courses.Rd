@@ -2,7 +2,8 @@
 % Please edit documentation in R/frgtracker.R
 \name{register_courses}
 \alias{register_courses}
-\title{Read and store the input data frame into a data frame of courses to be registered.}
+\title{Read and store the input data frame into a data frame of courses to be
+registered.}
 \usage{
 register_courses(df)
 }
@@ -16,4 +17,12 @@ None
 \description{
 For each of the course, the weights of all assessments should sum up to 1.
 The weights of individual assessment should be between 0 and 1.
+}
+\examples{
+course_df <- data.frame(
+course_id = c(rep(511, 6)),
+assessment_id = c("lab1","lab2","lab3","lab4","quiz1","quiz2"),
+weight = c(rep(.15, 4), rep(.2, 2)))
+
+register_courses(course_df)
 }
