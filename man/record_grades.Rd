@@ -16,3 +16,11 @@ None
 \description{
 The grades are recorded to be out of 100.
 }
+\examples{
+grade_df <- data.frame(course_id=rep(511, 6),
+student_id=rep("Kiki", 6),
+assessment_id = c('lab1', 'lab2', 'lab3', 'lab4', 'quiz1', 'quiz2'),
+grade=c(rep(92.1, 3), rep(80.2, 3)))
+
+record_grades(grade_df)
+}
