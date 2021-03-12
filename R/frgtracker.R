@@ -45,6 +45,8 @@ record_grades <- function(df){
 
 #' Calculate the summary statistics for specified courses including mean, median and quantiles.
 #'
+#' @param courses A dataframe containing component weights for each course
+#' @param grades A dataframe containing grades for students
 #' @param course_ids A list including all course IDs for which the summary statistics are
 #' calculated for.
 #'

@@ -7,6 +7,10 @@
 generate_course_statistics(courses, grades, course_ids)
 }
 \arguments{
+\item{courses}{A dataframe containing component weights for each course}
+
+\item{grades}{A dataframe containing grades for students}
+
 \item{course_ids}{A list including all course IDs for which the summary statistics are
 calculated for.}
 }
@@ -28,6 +32,6 @@ course_id = c("511"),
 lab1 = c(0.45),
 lab2 = c(0.55)
 )
-generate_course_statistics(course_ids = "511")
-generate_course_statistics(course_ids = c("511", "522"))
+generate_course_statistics(courses, grades, course_ids = "511")
+generate_course_statistics(courses, grades, course_ids = c("511", "522"))
 }
