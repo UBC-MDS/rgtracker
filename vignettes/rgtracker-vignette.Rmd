@@ -32,44 +32,33 @@ As a result, our team has come up with a good solution for instructors to reduce
 - Calculate final grades for each course
 - Adjust the students' grades
 
-## Data: An imaginary cohort
-
 ```{r, include = FALSE}
-courses <- data.frame(
-  course_id = c(511, 522),
-  lab1 = c(0.15, 0),
-  lab2 = c(0.15, 0),
-  lab3 = c(0.15, 0),
-  lab4 = c(0.15, 0),
-  quiz1 = c(0.2, 0),
-  quiz2 = c(0.2, 0),
-  milestone1 = c(0, 0.1),
-  milestone2 = c(0, 0.2),
-  milestone3 = c(0, 0.2),
-  milestone4 = c(0, 0.3),
-  feedback = c(0, 0.2)
-)
-
-grades <- data.frame(
-  course_id = c(511, 511, 511, 511, 522, 522, 522, 522),
-  student_id = c("tom", "tiff", "mike", "joel", "tom", "tiff", "mike", "joel"),
-  lab1 = c(100, 87.6, 84.4, 100, 0, 0, 0, 0),
-  lab2 = c(100, 100, 79.6, 100, 0, 0, 0, 0),
-  lab3 = c(79.2, 81.2, 75.2, 99.6, 0, 0, 0, 0),
-  lab4 = c(83.6, 89.2, 98.8, 71.2, 0, 0, 0, 0),
-  quiz1 = c(75.6, 100, 84.8, 96.8, 0, 0, 0, 0),
-  quiz2 = c(75.6, 73.2, 100, 79.2, 0, 0, 0, 0),
-  milestone1 = c(0, 0, 0, 0, 100, 100, 92, 98.4),
-  milestone2 = c(0, 0, 0, 0, 97.6, 77.2, 75.6, 85.6),
-  milestone3 = c(0, 0, 0, 0, 80, 76.8, 97.6, 96.8),
-  milestone4 = c(0, 0, 0, 0, 100, 100, 84.4, 100),
-  feedback = c(0, 0, 0, 0, 100, 85.6, 98.8, 82.4)
-)
+course_details <- readr::read_csv('course_info.csv')
+grade_details <- readr::read_csv('grade_info.csv')
 ```
 
-```{r Data Summary}
-courses
+## Register courses
 
+It is the beginning of a new school year, and our beloved instructors need to register for new courses in the system.
+
+```{r Show raw courses data}
+course_details %>%
+  head(3)
+```
+They can simply call the `register_courses` function in order to transform the data into a tidy data frame. In addition, it will also perform additional checks to make sure the `course_id` and `assessment_id` are in a list of predefined values, and the latter will be between 0 and 1 with all components for 1 course add up to 1.
+
+```{r Register courses}
+courses <- register_courses(course_details)
+  
+courses
+```
+
+## Record grades
+
+Continuous assessment is an effective way to assess how well the students understand the materials. For the majority of classes, these components consist of weekly labs and fortnightly quizzes. However, for some particular courses, there are unique components such as "Peer Review", "Milestone"... Instructors can effortlessly record these grades by calling the `record_grades` function. In addition, additional data sanity checks are also conducted to make sure the `course_id` and `assessment_id` are in a list of predefined values, and the grades must be between 0 and 100.
+
+```{r Record grades}
+grades <- record_grades(grade_details)
+  
 grades
 ```
-
