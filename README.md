@@ -4,6 +4,8 @@
 # rgtracker
 
 <!-- badges: start -->
+
+[![R-CMD-check](https://github.com/UBC-MDS/rgtracker/workflows/R-CMD-check/badge.svg)](https://github.com/UBC-MDS/rgtracker/actions)
 <!-- badges: end -->
 
 The goal of rgtracker is to allow UBC MDS lecturers to record, analyze
