@@ -17,7 +17,7 @@ Authors@R:
            role = c("aut"))
            )
 Description: This package provide UBC MDS lecturers to record, analyze and adjust grades for students in the MDS program.
-License: MIT + file LICENSE
+License: GNU LGPLv3 LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
