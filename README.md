@@ -65,7 +65,10 @@ And the development version from [GitHub](https://github.com/) with:
 devtools::install_github("UBC-MDS/rgtracker")
 ```
 ## Usage
-For additional documentation and usage examples please refer to the Introduction to rgtracker vignette page and the rgtracker pkgdown page.
+For additional documentation and usage examples please refer to the
+[Introduction to rgtracker](https://ubc-mds.github.io/rgtracker/articles/rgtracker-vignette.html)
+vignette page and the [rgtracker pkgdown](https://ubc-mds.github.io/rgtracker/) page.
+
 ## Code of Conduct
 
 Please note that the rgtracker project is released with a [Contributor
