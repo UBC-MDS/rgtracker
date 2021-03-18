@@ -51,14 +51,7 @@ that scales grades, plots the grades and calculates summary statistics
 
 ## Installation
 
-You can install the released version of rgtracker from
-[CRAN](https://CRAN.R-project.org) with:
-
-``` r
-install.packages("rgtracker")
-```
-
-And the development version from [GitHub](https://github.com/) with:
+You can install the released version of rgtracker from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
