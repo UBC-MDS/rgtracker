@@ -4,6 +4,9 @@
 # rgtracker
 
 <!-- badges: start -->
+
+[![R-CMD-check](https://github.com/UBC-MDS/rgtracker/workflows/R-CMD-check/badge.svg)](https://github.com/UBC-MDS/rgtracker/actions)
+[![codecov](https://codecov.io/gh/UBC-MDS/rgtracker/branch/main/graph/badge.svg?token=B347PANBOL)](https://codecov.io/gh/UBC-MDS/rgtracker)
 <!-- badges: end -->
 
 The goal of rgtracker is to allow UBC MDS lecturers to record, analyze
@@ -51,19 +54,16 @@ that scales grades, plots the grades and calculates summary statistics
 
 ## Installation
 
-You can install the released version of rgtracker from
-[CRAN](https://CRAN.R-project.org) with:
-
-``` r
-install.packages("rgtracker")
-```
-
-And the development version from [GitHub](https://github.com/) with:
+You can install the released version of rgtracker from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("UBC-MDS/rgtracker")
 ```
+## Usage
+For additional documentation and usage examples please refer to the
+[Introduction to rgtracker](https://ubc-mds.github.io/rgtracker/articles/rgtracker-vignette.html)
+vignette page and the [rgtracker pkgdown](https://ubc-mds.github.io/rgtracker/) page.
 
 ## Code of Conduct
 

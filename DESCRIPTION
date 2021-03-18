@@ -27,7 +27,8 @@ Suggests:
     knitr,
     rmarkdown,
     devtools,
-    readr
+    readr,
+    covr
 Config/testthat/edition: 3
 Imports: 
     dplyr,
@@ -35,4 +36,6 @@ Imports:
     rlang,
     tidyr,
     stats
+URL: https://github.com/UBC-MDS/rgtracker
+BugReports: https://github.com/UBC-MDS/rgtracker/issues
 VignetteBuilder: knitr
