@@ -64,7 +64,8 @@ And the development version from [GitHub](https://github.com/) with:
 # install.packages("devtools")
 devtools::install_github("UBC-MDS/rgtracker")
 ```
-
+## Usage
+TODO
 ## Code of Conduct
 
 Please note that the rgtracker project is released with a [Contributor
