@@ -23,7 +23,8 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Suggests: 
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    covr
 Config/testthat/edition: 3
 Imports: 
     dplyr,
@@ -31,3 +32,5 @@ Imports:
     rlang,
     tidyr,
     stats
+URL: https://github.com/UBC-MDS/rgtracker
+BugReports: https://github.com/UBC-MDS/rgtracker/issues
