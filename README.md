@@ -54,19 +54,16 @@ that scales grades, plots the grades and calculates summary statistics
 
 ## Installation
 
-You can install the released version of rgtracker from
-[CRAN](https://CRAN.R-project.org) with:
-
-``` r
-install.packages("rgtracker")
-```
-
-And the development version from [GitHub](https://github.com/) with:
+You can install the released version of rgtracker from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("UBC-MDS/rgtracker")
 ```
+## Usage
+For additional documentation and usage examples please refer to the
+[Introduction to rgtracker](https://ubc-mds.github.io/rgtracker/articles/rgtracker-vignette.html)
+vignette page and the [rgtracker pkgdown](https://ubc-mds.github.io/rgtracker/) page.
 
 ## Code of Conduct
 
