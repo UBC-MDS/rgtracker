@@ -59,7 +59,14 @@
   </ul>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/UBC-MDS/rgtracker/">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -75,7 +82,7 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#rgtracker" class="anchor"></a>rgtracker</h1></div>
 <!-- badges: start -->
-<!-- badges: end -->
+
 <p>The goal of rgtracker is to allow UBC MDS lecturers to record, analyze and adjust grades for students in a particular program. Users can record grades from each course, generate a summary report to determine which class is more challenging than the rest, or identify students who may need help. Finally, the package can suggest ways to adjust the grades for students to ensure the average grades match predefined benchmarks. It contains six functions: <code>register_courses</code>, <code>record_grades</code>, <code>generate_course_statistics</code>, <code>rank_courses</code>,<code>rank_students</code> and <code>suggest_grade_adjustment</code>.</p>
 <p>The main components of this package are:</p>
 <ul>
@@ -115,13 +122,15 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install the released version of rgtracker from <a href="https://CRAN.R-project.org">CRAN</a> with:</p>
+<p>You can install the released version of rgtracker from <a href="https://github.com/">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"rgtracker"</span><span class="op">)</span></code></pre></div>
-<p>And the development version from <a href="https://github.com/">GitHub</a> with:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"UBC-MDS/rgtracker"</span><span class="op">)</span></code></pre></div>
+</div>
+<div id="usage" class="section level2">
+<h2 class="hasAnchor">
+<a href="#usage" class="anchor"></a>Usage</h2>
+<p>For additional documentation and usage examples please refer to the <a href="https://ubc-mds.github.io/rgtracker/articles/rgtracker-vignette.html">Introduction to rgtracker</a> vignette page and the <a href="https://ubc-mds.github.io/rgtracker/">rgtracker pkgdown</a> page.</p>
 </div>
 <div id="code-of-conduct" class="section level2">
 <h2 class="hasAnchor">
@@ -132,11 +141,20 @@
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-    <div class="license">
+    <div class="links">
+<h2>Links</h2>
+<ul class="list-unstyled">
+<li>Browse source code at <br><a href="https://github.com/UBC-MDS/rgtracker/">https://​github.com/​UBC-MDS/​rgtracker/​</a>
+</li>
+<li>Report a bug at <br><a href="https://github.com/UBC-MDS/rgtracker/issues">https://​github.com/​UBC-MDS/​rgtracker/​issues</a>
+</li>
+</ul>
+</div>
+<div class="license">
 <h2>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
+<li><small>LGPL (&gt;= 2.1)</small></li>
 </ul>
 </div>
 <div class="community">
@@ -156,7 +174,14 @@
 </ul>
 </div>
 
-  </div>
+  <div class="dev-status">
+<h2>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/UBC-MDS/rgtracker/actions"><img src="https://github.com/UBC-MDS/rgtracker/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://codecov.io/gh/UBC-MDS/rgtracker"><img src="https://codecov.io/gh/UBC-MDS/rgtracker/branch/main/graph/badge.svg?token=B347PANBOL" alt="codecov"></a></li>
+</ul>
+</div>
+</div>
 </div>
 
 
