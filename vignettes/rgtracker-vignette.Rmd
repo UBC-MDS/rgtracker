@@ -1,0 +1,128 @@
+---
+title: "Introduction to rgtracker"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{rgtracker-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+devtools::load_all(".")
+```
+
+```{r setup}
+library(rgtracker)
+```
+
+While teaching at UBC is challenging and demanding, teaching in the Master of Data Science (MDS) program is even tougher as this is an accelerated program. Needless to say, the MDS teaching team is under a lot of stress when it comes to managing students' grade and adjusting the difficulties of the program.
+
+As a result, our team has come up with a good solution for instructors to reduce their workload on handling the grades. With our handy package, instructors can:
+
+- Register MDS courses
+- Record weekly grades
+- Calculate course statistics such as mean, median, 1st or 3rd quantile
+- Rank courses
+- Rank students
+- Calculate final grades for each course
+- Adjust the students' grades
+
+```{r, include = FALSE}
+course_details <- readr::read_csv('course_info.csv')
+grade_details <- readr::read_csv('grade_info.csv')
+
+final_grade <- data.frame(
+   course_id = c(rep("511", 4)),
+   student_id = c("tom", "tiff", "mike", "joel"),
+   grade = c(90, 80, 70, 67)
+)
+```
+
+## Register courses
+
+It is the beginning of a new school year, and our beloved instructors need to register new courses in the system.
+
+```{r Show raw courses data}
+course_details %>%
+  head(3)
+```
+They can simply call the `register_courses` function in order to transform the data into a tidy data frame. In addition, it will also perform additional checks to make sure the `course_id` and `assessment_id` are in a list of predefined values, and the latter will be between 0 and 1 with all components for a course add up to 1.
+
+```{r Register courses}
+courses <- register_courses(course_details)
+  
+courses
+```
+
+## Record grades
+
+Continuous assessment is an effective way to assess how well the students understand the materials. For the majority of classes, these components consist of weekly labs and fortnightly quizzes. However, for some particular courses, there are unique components such as "Peer Review", "Milestone"... Instructors can effortlessly record these grades by calling the `record_grades` function. In addition, additional data sanity checks are also conducted to make sure the `course_id` and `assessment_id` are in a list of predefined values, and the grades must be between 0 and 100.
+
+```{r Show raw grades data}
+grade_details %>%
+  head(3)
+```
+
+```{r Record grades}
+grades <- record_grades(grade_details)
+  
+grades
+```
+
+## Generate course statistics
+
+There are times instructors may want to see how well students perform for each course. Typically, metrics such as mean, median, 1st and 3rd quantile can be utilized to demonstrate how the grades in a class distributed. Understanding this need, we have implemented the `generate_course_statistics` function to assist them.
+
+```{r Generate course statistics}
+generate_course_statistics(courses, grades, course_ids = c("511", "522"))
+```
+
+We can clearly see that students in the `522` class are doing better than in the `511` class.
+
+## Rank courses
+
+Making the difficulty level consistent among courses is one of the top priorities that lecturers want to achieve. On the one hand, an easy class may make students feel bored as the content is not that challenging. On the other hand, making a course incredibly hard may be ineffective as students may give up after having struggled with the materials. As a result, it is beneficial to the teaching team if they can compare courses against each other to see if any of them is too hard or too easy. Fortunately, `rank_courses` function can yield the expected result.
+
+```{r Rank courses}
+rank_courses(courses, grades, "median", descending=FALSE)
+```
+
+## Rank students
+
+Sometimes, instructors may want to know which students are the best performers in the class in order to give them an award or ask them to share their learning tips with classmates. However, there are cases where they want to identify students who fall behind their peer so that they can approach and give these students appropriate support. As a result, lecturers can make use of the `rank_students` function.
+
+```{r Rank students}
+rank_students(final_grade, courseid = "511", n = 4, ascending = TRUE)
+```
+It seems Joel needs some extra help in the `511` class!
+
+## Calculate final grades
+
+It is time to submit the final grades to Canvas! Fortunately, lecturers can do that by calling one simple function, which is `calculate_final_grade`
+
+```{r Calculate final grades}
+calculate_final_grade(courses, grades, course_ids = c("522"))
+```
+
+It looks like all students in `522` class are doing well!
+
+## Suggest grade adjustment
+
+Our MDS teaching team aims to maintain an 85% average grade for each course. It is a real hassle to try adjusting the grades for quizzes or labs manually. Thanks to `suggest_grade_adjustment`, it is simple for lecturers to simulate the final grades that need to be adjusted to meet their benchmarks for quizzes, labs or even the overall course.
+
+```{r Suggest grade adjustment}
+# Before adjustment
+grades %>%
+  dplyr::filter(course_id == "511") %>%
+  dplyr::select(course_id, student_id, lab1, lab2, lab3, lab4, quiz1, quiz2)
+
+# After adjustment
+suggest_grade_adjustment(courses, grades, id = "511", benchmark_course = 90,
+                         benchmark_lab = 85, benchmark_quiz = 85) %>%
+  dplyr::select(course_id, student_id, lab1, lab2, lab3, lab4, quiz1, quiz2)
+```

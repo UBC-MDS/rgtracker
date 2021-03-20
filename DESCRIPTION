@@ -24,6 +24,10 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Suggests: 
     testthat (>= 3.0.0),
+    knitr,
+    rmarkdown,
+    devtools,
+    readr,
     covr
 Config/testthat/edition: 3
 Imports: 
@@ -34,3 +38,4 @@ Imports:
     stats
 URL: https://github.com/UBC-MDS/rgtracker
 BugReports: https://github.com/UBC-MDS/rgtracker/issues
+VignetteBuilder: knitr
